@@ -77,6 +77,16 @@ class ApiController extends Controller
 
     }
 
+
+    public function getDescuento(Request  $request)
+    {
+
+        $Liquidacion = Liquidacion::where('id', $request->id)->first();
+   
+        return $Liquidacion;
+
+    }
+
    
       
       

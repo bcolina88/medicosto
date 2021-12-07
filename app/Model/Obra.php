@@ -14,7 +14,7 @@ class Obra extends Model
      */
 
     protected $fillable = [
-        'nombre', 'active','created_at','updated_at',
+        'nombre','importe', 'active','created_at','updated_at',
     ];
 
     

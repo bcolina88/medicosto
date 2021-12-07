@@ -1,6 +1,6 @@
 @extends('layout.template')
 @section('title')
-Listado de Liquidaciones
+Listado de Descuento/Retenc
 @endsection
 @section('content')
 
@@ -12,7 +12,7 @@ Listado de Liquidaciones
           <div class="box box-info">
             <div class="box-header with-border">
 
-              <h3 class="box-title">Listado de Liquidaciones </h3>
+              <h3 class="box-title">Listado de Descuento/Retención </h3>
 @if (Session::has('message'))
  <p class="alert alert-info"><b>{{ Session::get('message')}}</b></p>
 @endif
@@ -72,14 +72,14 @@ Listado de Liquidaciones
             
 		            
                     @if (\App\Http\Controllers\RolesController::editar(8))
-		             <a href="{{route("liquidaciones.edit", ['id' => $medi->id])}}" onclick="return confirm('Seguro que Desea Editar liquidacion #{{$medi->id}}')" class="btn btn-default btn-warning fa fa-pencil"><b></b></a> 
+		             <a href="{{route("liquidaciones.edit", ['id' => $medi->id])}}" onclick="return confirm('Seguro que Desea Editar Descuento/Retención #{{$medi->id}}')" class="btn btn-default btn-warning fa fa-pencil"><b></b></a> 
                     @endif
                     
 		             
 
 		             @if (Auth::user()->idrole == 1)
                        @if (\App\Http\Controllers\RolesController::borrar(8))
-		               <button type='submit' class="btn btn-default btn-danger fa fa-trash" onclick="return confirm('Seguro que Desea eliminar liquidacion #{{$medi->id}}')" ></i></button> 
+		               <button type='submit' class="btn btn-default btn-danger fa fa-trash" onclick="return confirm('Seguro que Desea eliminar Descuento/Retención #{{$medi->id}}')" ></i></button> 
                        @endif
                      @endif
 		            
@@ -108,7 +108,7 @@ Listado de Liquidaciones
             <div class="box-footer clearfix">
 
               @if (\App\Http\Controllers\RolesController::agregar(8))
-              <a href="{{route('liquidaciones.create')}}" class="btn btn-default btn-warning btn-flat pull-left"><b>Nueva Liquidación</b></a> 
+              <a href="{{route('liquidaciones.create')}}" class="btn btn-default btn-warning btn-flat pull-left"><b>Nueva Descuento/Retención</b></a> 
               @endif
               
               <ul class="pagination pagination-sm no-margin pull-right">

@@ -1,13 +1,13 @@
 @extends('layout.template')
 @section('title')
-Crear Liquidación 
+Crear Descuento/Retención 
 @endsection
 
 
 @section('content')
   <section class="content-header">
       <h1>
-        Crear Liquidación
+        Crear Descuento/Retención
         <small></small>
     </section>
 

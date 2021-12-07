@@ -46,7 +46,7 @@
                      
                       <label for="exampleInputPassword1">Cuota</label> 
                  
-                     {!! Form::text('federacion_cuota', null, ['class' => 'form-control', 'placeholder' => 'Cuota']) !!}
+                     {!! Form::text('federacion_cuota', null, ['class' => 'form-control', 'placeholder' => '0.00']) !!}
                     </div>
 
 
@@ -77,6 +77,18 @@
 
 	                </div>
 
+
+	                <div class="col-md-4" >
+	                    <label class="hide" id="liquida">
+                     
+                            <label for="exampleInputPassword1">Liquida Imp. Ganancias</label> 
+                     		{!! Form::text('liquida_imp_gana', null, ['class' => 'form-control', 'placeholder' => '0.00']) !!}
+                        </label>
+                    
+
+                    </div>
+
+
                     <div class="col-md-12">
                      <h3 >Colegio <hr>
                     </div>
@@ -86,7 +98,7 @@
                       <br>
                       <label for="exampleInputPassword1">Cuota</label> 
                   
-                       {!! Form::text('colegio_cuota', null, ['class' => 'form-control', 'placeholder' => 'Cuota']) !!}
+                       {!! Form::text('colegio_cuota', null, ['class' => 'form-control', 'placeholder' => '0.00']) !!}
 	                   
                     </div>
 
@@ -94,9 +106,51 @@
                       <br>
                       <label for="exampleInputPassword1">Alícuota</label> 
                       <div class="form-group">
-                        {!! Form::text('colegio_alicuota', null, ['class' => 'form-control', 'placeholder' => 'Alícuota' ]) !!}
+                        {!! Form::text('colegio_alicuota', null, ['class' => 'form-control', 'placeholder' => '0' ]) !!}
                       </div>     
                     </div> 
+
+
+
+
+                    <div class="col-md-12">
+                     <h3 >Otros deducciones <hr>
+                    </div>
+
+
+                    <div class="col-md-4">
+                      <br>
+                      <label for="exampleInputPassword1">Compra materiales</label> 
+                  
+                       {!! Form::text('compra_materiales', null, ['class' => 'form-control', 'placeholder' => '0.00']) !!}
+	                   
+                    </div>
+
+                    <div class="col-md-4">
+                      <br>
+                      <label for="exampleInputPassword1">Seguro Adicional</label> 
+                  
+                       {!! Form::text('seguro_adicional', null, ['class' => 'form-control', 'placeholder' => '0.00']) !!}
+	                   
+                    </div>
+
+                    <div class="col-md-4">
+                      <br>
+                      <label for="exampleInputPassword1">Gtos. Admin. Caja. Prev.</label> 
+                  
+                       {!! Form::text('gastos_admin', null, ['class' => 'form-control', 'placeholder' => '0.00']) !!}
+	                   
+                    </div>
+
+                    <div class="col-md-4">
+                      <br>
+                      <label for="exampleInputPassword1">Aporte Caja. Prev.</label> 
+                  
+                       {!! Form::text('aporte_caja', null, ['class' => 'form-control', 'placeholder' => '0.00']) !!}
+	                   
+                    </div>
+
+
 
 
                     <div class="col-md-12">
@@ -139,7 +193,24 @@
 <script>
 
 
-$('.select2').select2();
+
+    $('[name="liquida_imp"]').click(function(){
+
+	      var bb = $('input:radio[name=liquida_imp]:checked').val();
+
+
+	      if (bb === "true") {
+	        $('#liquida').removeClass('hide');
+	    
+	      }else{
+	        $('#liquida').addClass('hide');
+
+	      }
+
+    });
+
+
+    $('.select2').select2();
 
     $('#datepicker_fecha').val(moment(new Date()).format("YYYY-MM-DD"))
     
@@ -151,9 +222,15 @@ $('.select2').select2();
 
   @if ($liquidacion)
 
+
+
+
       $("#datepicker_fecha").val("{{$liquidacion->fecha}}").trigger('change');
 
       @if ($liquidacion->liquida_imp  ===1)
+
+         $("#liquida").removeClass("hide");
+
 
          document.getElementById('liquida_imp1').checked = true;
 
@@ -161,10 +238,12 @@ $('.select2').select2();
 
 
       @if ($liquidacion->liquida_imp  ===0)
+         $("#liquida").addClass("hide");
 
          document.getElementById('liquida_imp2').checked = true;
 
       @endif
+
 
 
 

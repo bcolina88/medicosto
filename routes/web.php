@@ -54,6 +54,7 @@ Route::prefix('api')->group(function () {
     Route::get('permissions', 'ApiController@permissions')->name('permissions');
     Route::get('getRoleInfo', 'ApiController@getRoleInfo')->name('getRoleInfo');
     Route::get('getCarga', 'ApiController@getCarga')->name('getCarga');
+    Route::get('getDescuento', 'ApiController@getDescuento')->name('getDescuento');
 
     
 	

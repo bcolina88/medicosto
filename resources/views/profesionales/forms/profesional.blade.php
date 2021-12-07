@@ -159,7 +159,7 @@
                     <div class="col-md-4">
                         <br>
                         <label for="exampleInputPassword1">Condición ante IVA</label> 
-                        <select class="form-control select2" id="cond_iva" name="cond_iva" style="width: 100%;">
+                        <select class="form-control select2" id="cond_iva" name="cond_iva" required style="width: 100%;">
 
                           <option value="">Seleccione condición ante IVA</option>
                           <option value="Monotributista">Monotributista</option>

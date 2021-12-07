@@ -117,6 +117,15 @@ class LiquidacionController extends Controller
              'colegio_alicuota'          => $request->colegio_alicuota,
              'liquida_imp'          => $liquida_imp,
 
+             'liquida_imp_gana'     => $request->liquida_imp_gana, 
+             'compra_materiales'     => $request->compra_materiales, 
+             'seguro_adicional'     => $request->seguro_adicional, 
+             'gastos_admin'     => $request->gastos_admin, 
+             'aporte_caja'     => $request->aporte_caja,
+  
+
+
+
 
             ]);
 
@@ -191,6 +200,13 @@ class LiquidacionController extends Controller
              'colegio_cuota'          => $request->colegio_cuota,
              'colegio_alicuota'          => $request->colegio_alicuota,
              'liquida_imp'          => $liquida_imp,
+             
+             'liquida_imp_gana'     => $request->liquida_imp_gana, 
+             'compra_materiales'     => $request->compra_materiales, 
+             'seguro_adicional'     => $request->seguro_adicional, 
+             'gastos_admin'     => $request->gastos_admin, 
+             'aporte_caja'     => $request->aporte_caja,
+  
 
         ]);
 

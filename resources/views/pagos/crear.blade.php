@@ -1,13 +1,13 @@
 @extends('layout.template')
 @section('title')
-Pago de Obra Social
+Crear Liquidación
 @endsection
 
 
 @section('content')
   <section class="content-header">
       <h1>
-        Pago de Obra Social
+        Crear Liquidación
         <small></small>
     </section>
 

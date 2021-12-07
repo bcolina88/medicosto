@@ -14,7 +14,7 @@ class Pago extends Model
      */
 
     protected $fillable = [
-        'fecha', 'importe','idliquidacion','idprofesional','idobra','created_at','updated_at',
+        'fecha', 'importe','idliquidacion','idprofesional','obras','created_at','updated_at',
     ];
 
 
@@ -31,10 +31,14 @@ class Pago extends Model
         return $this->belongsTo('App\Model\Profesional','idprofesional','id');
     }
 
-     public function obra()
+   /*  public function obra()
     {
 
         return $this->belongsTo('App\Model\Obra','idobra','id');
+    }*/
+
+     public function obras(){
+        return $this->hasMany(Obra::class, "user_id", "id");
     }
 
     

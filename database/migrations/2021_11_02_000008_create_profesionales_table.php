@@ -34,7 +34,8 @@ class CreateProfesionalesTable extends Migration
             $table->string('tipo_cuenta')->nullable();
             $table->string('num_cuenta')->nullable();
 
-            $table->integer('ingreso_bruto')->nullable();
+            $table->float('ingreso_bruto', 24, 2)->nullable();;
+            
             $table->string('tipo_ingreso_bruto')->nullable();
             $table->string('cond_iva')->nullable();
             $table->string('fecha_ingreso_coc')->nullable();

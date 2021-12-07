@@ -16,11 +16,11 @@ class CreatePagosTable extends Migration
             $table->increments('id');
 
             $table->string('fecha')->nullable();
-            $table->integer('importe')->nullable();
+            $table->float('importe', 24, 2)->nullable();
 
             $table->integer('idliquidacion')->unsigned()->index();
             $table->integer('idprofesional')->unsigned()->index();
-            $table->integer('idobra')->unsigned()->index();
+            $table->text('obras')->nullable();;
 
             $table->foreign('idliquidacion')->references('id')->on('liquidaciones')
             ->onUpdate('cascade')
@@ -29,13 +29,6 @@ class CreatePagosTable extends Migration
             $table->foreign('idprofesional')->references('id')->on('profesionales')
             ->onUpdate('cascade')
             ->onDetete('cascade');
-
-            $table->foreign('idobra')->references('id')->on('obras')
-            ->onUpdate('cascade')
-            ->onDetete('cascade');
-           
-
-
            
             $table->timestamps();
             

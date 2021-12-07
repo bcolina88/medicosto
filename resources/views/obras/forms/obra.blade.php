@@ -29,7 +29,7 @@
                  <div class="box-body">
 	                <input type="hidden" name="id" value="0"/>
 	                <div class="row">
-	                    <div class="col-lg-12" style="margin: 0px;">
+	                    <div class="col-lg-6" style="margin: 0px;">
 	                      <label>Nombre:</label>
 	                      <input type="hidden" name="id" id="id">
 	                     
@@ -39,11 +39,22 @@
 
 	                    </div>
 	                </div>
+	                <div class="row">
+	                    <div class="col-lg-6" style="margin: 0px;">
+	                      <label>Importe:</label>
+	                      <input type="hidden" name="id" id="id">
+	                     
+                          {!! Form::text('importe', null, ['class' => 'form-control', 'placeholder' => '0.00', 'required']) !!}
+
+
+
+	                    </div>
+	                </div>
 
 
 	                 @if ($obra)
 	                <div class="row">
-	                    <div class="col-lg-12" style="margin: 0px;">
+	                    <div class="col-lg-6" style="margin: 0px;">
 
 		                    <label>Estatus:</label>
 		                      <select class="select2 form-control" name="active" id="active">
@@ -87,6 +98,7 @@
 
 @section('javascript')
 <script>
+
 
 
  @if ($obra)

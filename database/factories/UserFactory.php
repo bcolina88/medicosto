@@ -34,6 +34,18 @@ $factory->define(App\Model\Profesional::class, function (Faker $faker) {
         'apellido' => $faker->lastname,
         'active' => true,
         'telefono' => $faker->tollFreePhoneNumber,
+        'ingreso_bruto'=>  $faker->randomFloat($nbMaxDecimals = 2, $min = 0, $max = 50000),
+        'matricula'=> $faker->randomNumber($nbDigits = 6, $strict = false),
+
+    ];
+});
+
+
+$factory->define(App\Model\Obra::class, function (Faker $faker) {
+    return [
+        'nombre' => $faker->name,
+        'importe' =>  $faker->randomFloat($nbMaxDecimals = 2, $min = 0, $max = 50000),
+    	'active'=> true,
     ];
 });
 

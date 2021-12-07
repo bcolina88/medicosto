@@ -1,12 +1,12 @@
 @extends('layout.template')
 @section('title')
-Editar pago 
+Editar Liquidación 
 @endsection
 @section('content')
 
   <section class="content-header">
       <h1>
-        Editar pago
+        Editar Liquidación
         <small></small>
     </section>
 

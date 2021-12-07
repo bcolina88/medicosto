@@ -40,22 +40,17 @@ class PagoController extends Controller
                     {
                         $f->on('pagos.idliquidacion','=','liquidaciones.id');
                     
-                    })->Join('obras', function($f) use($search)
-                    {
-                        $f->on('pagos.idobra','=','obras.id');
-                    
                     })->Join('profesionales', function($f) use($search)
                     {
                         $f->on('pagos.idprofesional','=','profesionales.id');
    
-                    })->orWhere('obras.nombre','LIKE','%'.$search.'%')
-                      ->orWhere('profesionales.nombre','LIKE','%'.$search.'%')
+                    })->orWhere('profesionales.nombre','LIKE','%'.$search.'%')
                       ->orWhere('profesionales.apellido','LIKE','%'.$search.'%')
                       ->orWhere('profesionales.matricula','LIKE','%'.$search.'%')
                       ->orWhere('pagos.importe','LIKE','%'.$search.'%')
                       ->orWhere('pagos.fecha','LIKE','%'.$search.'%')
                       ->orderBy('pagos.id','DESC')
-                      ->select('pagos.*','obras.nombre')
+                      ->select('pagos.*')
                       ->paginate(25);
 
         return view('pagos.listado', compact('pagos'));
@@ -97,12 +92,17 @@ class PagoController extends Controller
         $date = $carbon->now();
         $date = $date->format('d-m-Y');
 
+        $v =[];
+        $v=$request->obras;
+
+        $json = json_encode($v,true);
+
             $pago = Pago::firstOrCreate([
-             'fecha'          => $date,
+             'fecha'            => $date,
              'importe'          => $request->importe,
              'idliquidacion'	=> $request->idliquidacion,
-             'idprofesional'  => $request->idprofesional,
-             'idobra'	=> $request->idobra,
+             'idprofesional'    => $request->idprofesional,
+             'obras'	        => $json,
 
             ]);
 

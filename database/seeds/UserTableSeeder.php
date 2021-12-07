@@ -72,26 +72,11 @@ class UserTableSeeder extends Seeder
        ]);
 
 
-        Obra::create([
-            'nombre'=> 'Obra1',
-            'active'=> 1,
-        ]);
 
-        Obra::create([
-            'nombre'=> 'Obra2',
-            'active'=> 1,
-        ]);
-        Obra::create([
-            'nombre'=> 'Obra3',
-            'active'=> 1,
-        ]);
-        Obra::create([
-            'nombre'=> 'Obra4',
-            'active'=> 1,
-        ]);
-        Obra::create([
-            'nombre'=> 'Obra4',
-            'active'=> 1,
+        $o = factory(App\Model\Obra::class, 12)->create([
+
+   
+
         ]);
 
 

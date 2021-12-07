@@ -16,11 +16,17 @@ class CreateLiquidacionesTable extends Migration
             $table->increments('id');
 
             $table->string('fecha')->nullable();
-            $table->integer('federacion_cuota')->nullable();
-            $table->integer('colegio_cuota')->nullable();
-            $table->integer('colegio_alicuota')->nullable();
-            $table->boolean('liquida_imp')->nullable();           
-           
+            $table->float('federacion_cuota', 24, 2)->nullable();
+            $table->float('colegio_cuota', 24, 2)->nullable();
+            $table->float('colegio_alicuota', 24, 2)->nullable();
+            $table->float('liquida_imp_gana', 24, 2)->nullable();
+            $table->boolean('liquida_imp')->nullable(); 
+
+            $table->float('compra_materiales', 24, 2)->nullable();
+            $table->float('seguro_adicional', 24, 2)->nullable();
+            $table->float('gastos_admin', 24, 2)->nullable();
+            $table->float('aporte_caja', 24, 2)->nullable();
+          
             $table->timestamps();
             
 

@@ -1,6 +1,6 @@
 @extends('layout.template')
 @section('title')
-Listado de Pagos de Obras Sociales
+Listado de Liquidaciones 
 @endsection
 @section('content')
 
@@ -12,7 +12,7 @@ Listado de Pagos de Obras Sociales
           <div class="box box-info">
             <div class="box-header with-border">
 
-              <h3 class="box-title">Listado de Pagos de Obras Sociales</h3>
+              <h3 class="box-title">Listado de Liquidaciones</h3>
 @if (Session::has('message'))
  <p class="alert alert-info"><b>{{ Session::get('message')}}</b></p>
 @endif
@@ -35,7 +35,7 @@ Listado de Pagos de Obras Sociales
                     <th>Nro</th>
                     <th>Fecha Pago</th>
                     <th>Importe</th>
-                    <th>Obra Social</th>
+         
                     <th>Profesional</th>
                     <th>Acciones</th>
                   </tr>
@@ -47,7 +47,7 @@ Listado de Pagos de Obras Sociales
                     <td>{{$medi->id}}</td>
                     <td>{{$medi->fecha}}</td>
                     <td>{{$medi->importe}}</td>
-                    <td>{{$medi->obra->nombre}}</td>
+       
                     <td>{{$medi->profesional->nombre}} {{$medi->profesional->nombre}} - {{$medi->profesional->matricula}}</td>
             
             
@@ -56,7 +56,7 @@ Listado de Pagos de Obras Sociales
                       {!! Form::model($medi, ['route'=>['pagos.update', $medi->id], 'method'=>'DELETE']) !!}
 
                           @if (\App\Http\Controllers\RolesController::editar(9))
-			               <a href="{{route("pagos.edit", ['id' => $medi->id])}}" onclick="return confirm('Seguro que Desea Editar Obra Social #{{$medi->id}}')" class="btn btn-default btn-warning fa fa-pencil"><b></b></a> 
+			               <a href="{{route("pagos.edit", ['id' => $medi->id])}}" onclick="return confirm('Seguro que Desea editar Liquidación #{{$medi->id}}')" class="btn btn-default btn-warning fa fa-pencil hide"><b></b></a> 
 			              @endif
 
 
@@ -64,7 +64,7 @@ Listado de Pagos de Obras Sociales
 
 			              @if (Auth::user()->idrole == 1)
                            @if (\App\Http\Controllers\RolesController::borrar(9))
-			                 <button type='submit' class="btn btn-default btn-danger fa fa-trash" onclick="return confirm('Seguro que Desea eliminar Obras Sociales #{{$medi->id}}')" ></i></button> 
+			                 <button type='submit' class="btn btn-default btn-danger fa fa-trash" onclick="return confirm('Seguro que Desea eliminar Liquidación #{{$medi->id}}')" ></i></button> 
 			                @endif
 			              @endif
 			              
@@ -91,7 +91,7 @@ Listado de Pagos de Obras Sociales
             <div class="box-footer clearfix">
 
                 @if (\App\Http\Controllers\RolesController::agregar(9))
-                    <a href="{{route('pagos.create')}}" class="btn btn-default btn-warning btn-flat pull-left"><b>Nuevo Pago</b></a> 
+                    <a href="{{route('pagos.create')}}" class="btn btn-default btn-warning btn-flat pull-left"><b>Nuevo Liquidación</b></a> 
 			    @endif
               
 
