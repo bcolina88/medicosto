@@ -21,7 +21,7 @@ Route::get('/resetPassword', 'HomeController@cambiarPassword')->name('resetPassw
 Route::post('/resetPassword', 'HomeController@resetPass')->name('resetPass');
 
 
-Route::get('descargar/{id}', 'HistoricalController@pdf')->name('reciboPago');
+Route::get('descargar/{id}', 'PagoController@pdf')->name('reciboPago');
 
 //Route::get('/obras/crearPago', 'ObraController@createPago')->name('obras.createPago');
 //Route::get('/obras/listadoPagos', 'ObraController@listadoPagos')->name('obras.listadoPagos');
@@ -55,6 +55,10 @@ Route::prefix('api')->group(function () {
     Route::get('getRoleInfo', 'ApiController@getRoleInfo')->name('getRoleInfo');
     Route::get('getCarga', 'ApiController@getCarga')->name('getCarga');
     Route::get('getDescuento', 'ApiController@getDescuento')->name('getDescuento');
+    Route::get('getObra', 'ApiController@getObra')->name('getObra');
+    Route::get('getPagosItems', 'ApiController@getPagosItems')->name('getPagosItems');
+
+
 
     
 	

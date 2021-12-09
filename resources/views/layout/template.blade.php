@@ -250,7 +250,7 @@
         @if(\App\Http\Controllers\RolesController::ver(8))
 
         <li class="treeview">
-              <a href="#"> <i class="fa fa-money"></i> Descuentos/Retenc.
+              <a href="#"> <i class="fa fa-archive"></i> Descuentos/Retenc.
                 <span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
                 </span>

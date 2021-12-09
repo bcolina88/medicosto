@@ -21,6 +21,10 @@ class CreatePagosTable extends Migration
             $table->integer('idliquidacion')->unsigned()->index();
             $table->integer('idprofesional')->unsigned()->index();
             $table->text('obras')->nullable();;
+            $table->float('iva', 12, 2)->nullable();
+            $table->float('subtotal', 12, 2)->nullable();
+            $table->float('descuento', 12, 2)->nullable();
+            $table->float('total', 12, 2)->nullable();
 
             $table->foreign('idliquidacion')->references('id')->on('liquidaciones')
             ->onUpdate('cascade')

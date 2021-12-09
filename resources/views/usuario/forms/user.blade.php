@@ -76,8 +76,13 @@
 
    
                           <option value="">Seleccione rol</option>
-                          <option value="1">Administrador</option>
-                          <option value="3">Empleado</option>
+            
+                          @foreach ($roles as $key => $role)
+
+                          <option value="{{$role->id}}">{{$role->tipo}}</option>
+
+                          @endforeach
+
 
                          
 
@@ -93,7 +98,9 @@
                     <div class="col-md-4">
                     <br>
                         <label for="exampleInputPassword1">Telefono</label> 
-                        {!! Form::text('telefono', null, ['class' => 'form-control', 'placeholder' => '(000)-000-0000', 'data-inputmask'=>'"mask": "(999) 999-9999"','data-mask']) !!}
+                       
+
+                        {!! Form::text('telefono', null, ['class' => 'form-control', 'placeholder' => '(0000) 00-0000', 'data-inputmask'=>'"mask": "(9999) 99-9999"','data-mask']) !!}
 
                   
                     </div> 
@@ -121,27 +128,7 @@
                         
                     </div>
 
-                      
-                    <div class="col-md-12">
-                     <h3 >Compensación <hr>
-                    </div>
-                    <br>
-
-
-                   
-
-                    <div class="col-md-4"> 
-
-                      <label for="exampleInputPassword1">Sueldo</label>  
-
                     
-
-                      <div class="form-group">
-            
-                        {!! Form::number('sueldo', null, ['class' => 'form-control', 'placeholder' => '$0.00']) !!}
-                      </div>     
-                    </div> 
-
 
 
                     <div class="col-md-12">
@@ -152,29 +139,21 @@
 
                     <div class="col-md-4">
                         <label for="exampleInputPassword1">Contacto de emergencia</label>  
-                        {!! Form::text('contacto_emergencia', null, ['class' => 'form-control', 'placeholder' => '(000)-000-0000', 'data-inputmask'=>'"mask": "(999) 999-9999"','data-mask']) !!}
+                 
+                  		{!! Form::text('contacto_emergencia', null, ['class' => 'form-control', 'placeholder' => '(0000) 00-0000', 'data-inputmask'=>'"mask": "(9999) 99-9999"','data-mask']) !!}
 
-                  
+                    
+
                     </div>  
 
 
-                    <div class="col-md-4">
-                        <label for="exampleInputPassword1">Fecha de contratación</label> 
-                        <input type="text" class="form-control" name="fecha_contrato" id="datepicker_contrato" >
-                    </div>
-
-             
-
-                    <div class="col-md-4">
-                        <label for="exampleInputPassword1">Fecha de despido</label> 
-                        <input type="text" class="form-control" name="fecha_despido" id="datepicker_despido" >   
-                    </div>
+                    
 
                      @if ($user2)
 
 
                           <div class="col-md-4">
-                            <br>
+                            
                             <label for="exampleInputPassword1">Estado</label> 
     
                               <select class="form-control select2" id="estado" name="estado" style="width: 100%;">
@@ -190,25 +169,9 @@
 
                     <div class="col-md-12">
                        <br><br>
-                      <div class="col-md-12" id="ver-image"></div> 
-       
-                       <label for="exampleInputPassword1">Cargar documentos de identificación</label>
-
-                       @if (!$user2)
-
-                       
-
-                      <input type="file" name="images[]" id="images[]" multiple >
-                       
-
-                       @else
-
-                      <input type="file" name="images[]" id="images[]" multiple >
-
-                       @endif
                      
                
-                      <br>
+                    
                        <span style="color: #E6674A;">*</span> Campos Obligatorios
                       <br><br>
                     </div>
@@ -281,83 +244,6 @@
 
 
   @endif
-
-
-$('#ingresar').click(function(){
-
-
-
-         if (( $('[name="nombre"]').val() ==="") ||  ($('[name="apellido"]').val() ==="")|| ($('[name="domicilio"]').val() ==="")||  ($('[name="idrole"]').val() ==="")|| ($('[name="correo"]').val() ==="")|| ($('[name="contacto_emergencia"]').val() ==="")|| ($('[name="fecha_contrato"]').val() ==="")) {
-    
-
-
-            swal({
-              title: 'Verifique los campos obligatorios',
-              
-              icon: 'warning',
-              buttons: {
-    
-                cancel: {
-                  text: "Salir",
-                  value: false,
-                  visible: true
-                }
-              }
-            }).then((result) => {});
-
-
-
-
-
-
-        }else{
-                agregarOrden(); 
-        };
-
-
-  
-
-
-});
-
-
-
-function agregarOrden(){
-
-
-      var data = getFiles();
-      data=getFormData("formCreate",data);
-
-
-      $.ajax({
-          url: "{{ route('create_product') }}",                                          
-          data: data,
-          contentType: false,
-          processData: false,
-          method: 'POST',
-      })
-      .done(function(msg) {
-
-        if (msg === "guardar") {
-          var message = 'El Usuario Fue Creado Correctamente';
-
-        };
-
-        if (msg === "editar") {
-          var message = 'El Usuario Fue Actualizado Correctamente';
-
-        };
-
-          window.location.href = "{{ route('usuarios.index') }}";
-
-      })
-      .fail(function(msg) {
-            //console.log("error en createAlbarane");
-      });
-
-
-
-}
 
 
 

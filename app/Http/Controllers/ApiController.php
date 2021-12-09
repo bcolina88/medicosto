@@ -12,6 +12,8 @@ use App\Model\Role;
 use App\Model\Obra;
 use App\Model\Profesional;
 use App\Model\Liquidacion;
+use App\Model\Pago;
+use App\Model\PagoItem;
 
 
 
@@ -86,6 +88,35 @@ class ApiController extends Controller
         return $Liquidacion;
 
     }
+
+     public function getObra(Request  $request)
+    {
+      $article = Obra::where('id',$request->id)->get();
+      return json_encode($article);
+
+    }  
+
+    public function getPagosItems(Request  $request)
+    {
+      $pago = Pago::where('id',$request->id)->first();
+      $albaranesItems = PagoItem::where('idpago',$request->id)->get();
+      $articulos =[];
+
+      foreach ($albaranesItems as $key => $items) {
+
+          $article = Obra::where('id',$items['idobra'])->first();
+
+          $articulo = array('idarticulo' => $items['idobra'],'nombre' => $article->nombre,'importe' => $article->importe,'cantidad' => $items['total_fact_odont'],'id' => $article->id,
+            'total' => $items['total'],  'total_general' => $pago->total,'sub_total' => $pago->subtotal,'iva' => $pago->iva, 'precio' => $items['porcentaje_cobro']);  
+          
+          array_push($articulos,$articulo);
+         
+      }
+
+      return json_encode($articulos);
+
+    }
+
 
    
       

@@ -21,7 +21,6 @@ $factory->define(App\Model\User::class, function (Faker $faker) {
         'remember_token' => str_random(10),
         'active' => true,
         'domicilio' => $faker->address,
-        'sueldo'=>  $faker->randomFloat($nbMaxDecimals = 2, $min = 0, $max = 5),
         'contacto_emergencia' => $faker->tollFreePhoneNumber,
         'telefono' => $faker->tollFreePhoneNumber,
     ];
@@ -44,7 +43,7 @@ $factory->define(App\Model\Profesional::class, function (Faker $faker) {
 $factory->define(App\Model\Obra::class, function (Faker $faker) {
     return [
         'nombre' => $faker->name,
-        'importe' =>  $faker->randomFloat($nbMaxDecimals = 2, $min = 0, $max = 50000),
+        'importe' =>  $faker->randomFloat($nbMaxDecimals = 0, $min = 0, $max = 10),
     	'active'=> true,
     ];
 });

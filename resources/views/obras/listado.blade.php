@@ -34,7 +34,7 @@ Listado de Obras Sociales
                   <tr>
                     <th>Nro</th>
                     <th>Nombre</th>
-                    <th>Importe</th>
+                    <th>% de cobro de factura</th>
                     <th>Estado</th>
 
               

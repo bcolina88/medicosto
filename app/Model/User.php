@@ -15,8 +15,7 @@ class User extends Model
      * @var array
      */
     protected $fillable = [
-       'telefono','declaracion','contacto_emergencia' ,'fecha_contrato' ,'fecha_despido', 'images','nombre','apellido','segundo_nombre','cargo','idrole', 'email', 'password','active', 'apellido', 'domicilio', 'tipo_empleo', 'departamento', 'ciudad', 'estado', 'codigo_postal', 'fecha_nacimiento', 'seguro_social', 'tipo_cuenta', 'titular_cuenta', 'ruta_transito', 'numero_cuenta', 'forma_pago','tipo_pago', 'pago_hora',
-
+       'telefono', 'contacto_emergencia' , 'nombre', 'apellido', 'idrole', 'email', 'password', 'active', 'domicilio', 'fecha_nacimiento',
     ];
 
     /**

@@ -41,10 +41,10 @@
 	                </div>
 	                <div class="row">
 	                    <div class="col-lg-6" style="margin: 0px;">
-	                      <label>Importe:</label>
+	                      <label>% de cobro de factura </label>
 	                      <input type="hidden" name="id" id="id">
 	                     
-                          {!! Form::text('importe', null, ['class' => 'form-control', 'placeholder' => '0.00', 'required']) !!}
+                          {!! Form::text('importe', null, ['class' => 'form-control', 'placeholder' => '0', 'required']) !!}
 
 
 
@@ -67,7 +67,7 @@
 	                </div>
 
 
-  @endif
+  				    @endif
 
 	                <div class="row">
 					    <div class="col-lg-12" style="text-align: center;">

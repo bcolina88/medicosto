@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\Auth;
 use App\Model\User;
 use App\Model\Obra;
 use App\Model\Pago;
+use App\Model\PagoItem;
+
+
+use Barryvdh\DomPDF\Facade as PDF;
 
 use Session;
 use DB;
@@ -92,26 +96,107 @@ class PagoController extends Controller
         $date = $carbon->now();
         $date = $date->format('d-m-Y');
 
-        $v =[];
+
+        $arti = [];
+        $canti = [];
+  
+        $eliminar = [];
+
+        /*$v =[];
         $v=$request->obras;
-
-        $json = json_encode($v,true);
-
-            $pago = Pago::firstOrCreate([
-             'fecha'            => $date,
-             'importe'          => $request->importe,
-             'idliquidacion'	=> $request->idliquidacion,
-             'idprofesional'    => $request->idprofesional,
-             'obras'	        => $json,
-
-            ]);
+        $photo ='';
 
 
+        for ($i = 0; $i < count($v); $i++) {
+        	$photo = $v[$i].','.$photo;
+        }
 
-            $pago->save();
+        $obras = rtrim($photo,',');*/
 
-            session::flash('message','El pago fue creado correctamente');
-            return redirect(route('pagos.index')); 
+
+        if ($request->tipo==="editar") {
+
+
+        	$albaranesItem = PagoItem::where('idobra',$request->id)->get();
+            $pago = Pago::find($request->id);
+          
+	        $pago->fill([
+	           
+	                 'fecha'            => $date,
+		             'importe'          => $request->importe,
+		             'idliquidacion'	=> $request->idliquidacion,
+		             'idprofesional'    => $request->idprofesional,
+		             'iva'              => $request->iva,  
+		             'descuento'        => $request->descuento,
+		             'subtotal'         => $request->subtotal, 
+		             'total'            => $request->total, 
+	        ]);
+
+	        $pago->save();
+
+	        foreach ($albaranesItem as $key => $item) {
+
+	    
+	            PagoItem::destroy($item['id']);  
+	          
+	        }
+
+
+        }
+
+
+        if ($request->tipo==="guardar") {
+
+       
+
+		        $pago = Pago::firstOrCreate([
+		             'fecha'            => $date,
+		             'importe'          => $request->importe,
+		             'idliquidacion'	=> $request->idliquidacion,
+		             'idprofesional'    => $request->idprofesional,
+		             'iva'              => $request->iva,  
+		             'descuento'        => $request->descuento,
+		             'subtotal'         => $request->subtotal, 
+		             'total'            => $request->total, 
+		        
+		        ]);
+
+
+		        $pago->save();
+
+
+		}
+
+
+
+		        
+
+
+		        $articulos = $request->obras;
+
+
+		        foreach ($articulos as $key => $item) {
+		           
+			          //$article = Obra::where('id',$item['id'])->first();
+
+
+			          $pago_items = PagoItem::firstOrCreate([
+			             'idpago'         => $pago->id,
+			             'idobra'         => $item['id'],
+			             'total_fact_odont'       => $item['cantidad'], 
+			             'porcentaje_cobro'  => $item['precio'],
+			             'total'          => $item['total'],
+			             'fecha'          => $date,
+			        
+			          ]);
+		          
+		        }
+
+		        return json_encode('creado');
+
+
+
+
     }
 
 
@@ -148,19 +233,30 @@ class PagoController extends Controller
 
 
     	$pago = Pago::find($id);
+    	$v =[];
+        $v=$request->obras;
+        $photo ='';
+
+
+        for ($i = 0; $i < count($v); $i++) {
+        	$photo = $v[$i].','.$photo;
+        }
+
+        $obras = rtrim($photo,',');
+
 
 
         $pago->fill([
 			'importe'          => $request->importe,
 			'idliquidacion'	=> $request->idliquidacion,
 			'idprofesional'  => $request->idprofesional,
-			'idobra'	=> $request->idobra,
+			'obras'	=> $obras,
                            
         ]);
 
         $pago->save();
 
-        session::flash('message','El pago fue actualizado correctamente');
+        session::flash('message','La liquidación fue actualizada correctamente');
         return redirect(route('pagos.index')); 
 
    }
@@ -174,7 +270,7 @@ class PagoController extends Controller
     public function destroy($id)
     {
     	Pago::destroy($id);
-        session::flash('message','El pago fue eliminadc correctamente');
+        session::flash('message','La liquidación fue eliminada correctamente');
         return redirect(route('pagos.index')); 
     }
 
@@ -207,6 +303,49 @@ class PagoController extends Controller
 
         return redirect(route('obras.index')); 
     }
+
+
+    public function pdf($id)
+    {        
+        /**
+         * toma en cuenta que para ver los mismos 
+         * datos debemos hacer la misma consulta
+        **/
+       /* $historical =  Historical::with(['empleado', 'transcriptor'])->where('id',$id)->first();
+
+        $timesheet = HistoricalHasTimesheet::with(['timesheet'])->where('idhistorical',$historical->id)->first();
+
+        if ($timesheet) {
+            $historical['timesheet_info'] = $timesheet;
+        }else{
+            $historical['timesheet_info'] ='';
+        }
+
+        $seguro_social = explode("-", $historical->empleado->seguro_social);
+        $ssn = $seguro_social[2];
+
+
+
+        $ytd = DB::table('historicals')->where("historicals.idempleado", $id)
+                  ->select(DB::raw("sum(historicals.monto) AS total"))
+                  ->get();*/
+
+      
+
+
+
+       // $pdf = PDF::loadView('pdf.recibo', compact('historical','ssn','ytd'));
+        $pago =  Pago::with(['liquidacion', 'profesional'])->where('id',$id)->first();
+
+
+        $pdf = PDF::loadView('pdf.recibo', compact('pago'));
+
+
+        $nomb = $pago->profesional->apellido;
+
+        return $pdf->download($nomb.'.pdf');
+    }
+
 
 
 

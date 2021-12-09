@@ -14,8 +14,7 @@ class Pago extends Model
      */
 
     protected $fillable = [
-        'fecha', 'importe','idliquidacion','idprofesional','obras','created_at','updated_at',
-    ];
+        'fecha', 'importe','idliquidacion','idprofesional','obras','created_at','updated_at','iva', 'descuento', 'subtotal', 'total'];
 
 
      public function liquidacion()
@@ -37,9 +36,7 @@ class Pago extends Model
         return $this->belongsTo('App\Model\Obra','idobra','id');
     }*/
 
-     public function obras(){
-        return $this->hasMany(Obra::class, "user_id", "id");
-    }
+
 
     
 }

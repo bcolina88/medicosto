@@ -192,12 +192,9 @@
 @section('javascript')
 <script>
 
-
-
     $('[name="liquida_imp"]').click(function(){
 
 	      var bb = $('input:radio[name=liquida_imp]:checked').val();
-
 
 	      if (bb === "true") {
 	        $('#liquida').removeClass('hide');
@@ -211,9 +208,7 @@
 
 
     $('.select2').select2();
-
     $('#datepicker_fecha').val(moment(new Date()).format("YYYY-MM-DD"))
-    
     $('#datepicker_fecha').datetimepicker({
       format: 'YYYY-MM-DD'
     });
@@ -223,30 +218,22 @@
   @if ($liquidacion)
 
 
+        $("#datepicker_fecha").val("{{$liquidacion->fecha}}").trigger('change');
+
+	    @if ($liquidacion->liquida_imp  == 1)
+
+	        $("#liquida").removeClass("hide");
+	        document.getElementById('liquida_imp1').checked = true;
+
+	    @endif
 
 
-      $("#datepicker_fecha").val("{{$liquidacion->fecha}}").trigger('change');
+        @if ($liquidacion->liquida_imp  == 0)
+         
+            $("#liquida").addClass("hide");
+            document.getElementById('liquida_imp2').checked = true;
 
-      @if ($liquidacion->liquida_imp  ===1)
-
-         $("#liquida").removeClass("hide");
-
-
-         document.getElementById('liquida_imp1').checked = true;
-
-      @endif
-
-
-      @if ($liquidacion->liquida_imp  ===0)
-         $("#liquida").addClass("hide");
-
-         document.getElementById('liquida_imp2').checked = true;
-
-      @endif
-
-
-
-
+        @endif
 
 
   @endif

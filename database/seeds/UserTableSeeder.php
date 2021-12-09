@@ -25,11 +25,7 @@ class UserTableSeeder extends Seeder
        'domicilio' => '',
        'fecha_nacimiento'=> '',
        'telefono'=> '',
-       'sueldo'=> 0,
        'contacto_emergencia' => '',
-       'fecha_contrato'=> '',
-       'fecha_despido'=> '',
-       'images'=> '',
 
        ]);
 
@@ -44,11 +40,7 @@ class UserTableSeeder extends Seeder
        'domicilio' => '',
        'fecha_nacimiento'=> '',
        'telefono'=> '',
-       'sueldo'=> 0,
        'contacto_emergencia' => '',
-       'fecha_contrato'=> '',
-       'fecha_despido'=> '',
-       'images'=> '',
 
        ]);
 
@@ -63,21 +55,13 @@ class UserTableSeeder extends Seeder
        'domicilio' => '',
        'fecha_nacimiento'=> '',
        'telefono'=> '',
-       'sueldo'=> 0,
        'contacto_emergencia' => '',
-       'fecha_contrato'=> '',
-       'fecha_despido'=> '',
-       'images'=> '',
 
        ]);
 
 
 
-        $o = factory(App\Model\Obra::class, 12)->create([
-
-   
-
-        ]);
+        $o = factory(App\Model\Obra::class, 12)->create([]);
 
 
         $p = factory(App\Model\Profesional::class, 12)->create([

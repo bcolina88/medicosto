@@ -26,7 +26,7 @@
                 <!-- form start -->  
 
 
-                <form role="form">
+           
                   <div class="box-body">
                     <div class="col-md-12">
                     <div class="form-group">
@@ -45,6 +45,8 @@
 	                        <br>
 	                        <label for="exampleInputPassword1">Descuento/Retención</label> <span style="color: #E6674A;">*</span>
 	                        <select class="form-control select2" id="idliquidacion" name="idliquidacion" style="width: 100%;" required></select>
+	                    	
+
 	                    	<div class="btn-group">
 								   <!-- <a class="btn btn-default btn-success fa fa-plus" id='btn-ingresar-cliente'></a>
 								    <a class="btn btn-default btn-warning fa fa-pencil" id='btn-editar-cliente'></a>-->
@@ -77,11 +79,92 @@
 
                     <div class="col-md-6">
                      <br> 
-                        <label for="exampleInputPassword1">Obras Sociales</label> <span style="color: #E6674A;">*</span>
-                        <select class="form-control select2" multiple="multiple" id="obras" name="obras[]" style="width: 100%;" required> </select>
+                       <!--  <label for="exampleInputPassword1">Obras Sociales</label> <span style="color: #E6674A;">*</span>
+                       <select class="form-control select2" multiple="multiple" id="obras" name="obras[]" style="width: 100%;" required> </select>
+-->
+                    </div>
+                    </div>
 
-                    </div>
-                    </div>
+
+                    <!-- Table row -->
+      <div class="row">
+        <div class="col-xs-12 table-responsive">
+          <table class="table table-bordered table-hover table-responsive" id="table-articulos">
+                <thead>
+                <tr>
+                  <th style="width: 90px;">Nombre Obra S.</th>
+                  <th style="width: 50px;">Total de Fact. de Odont.</th>
+                  <th style="width: 50px;">% de cobro de factura</th>
+                  <th style="width: 50px;">Total</th>
+                  <th style="width: 50px;">Acciones</th>
+                </tr>
+                </thead>
+                <tbody >
+                  <tr style="background-color: transparent;">
+          
+                    </td>
+                  </tr>
+                </tbody>
+
+          </table>
+          <td colspan="7">
+                      <p id="mensaje" name="mensaje" class="alert alert-info text-center " >No hay obras sociales.</p>
+                      <br>
+                      <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="col-sm-4">
+                                {!! Form::label('obras_sociales', 'Obras Sociales:') !!} 
+                            </div>
+                            <div class="col-sm-8">
+                               <select class="form-control select2" id="obras" name="obras" style="width: 100%;" required> </select>
+                                
+
+                            </div>
+                            <br><br>      
+                        </div>
+                      </div>
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+
+      <div class="row">
+        <!-- accepted payments column -->
+        <div class="col-xs-6">
+         
+               
+        
+        </div>
+        <!-- /.col -->
+        <div class="col-xs-6">
+          <p class="lead">Monto adeudado {{$date}} </p>
+
+          <div class="table-responsive">
+            <table class="table">
+              <tr>
+                <th style="width:50%">Subtotal:</th>
+                <td>$ <span id="sub_total">0.00</span></td>
+              </tr>
+              <tr>
+                <th>Iva (19%):</th>
+                <td>$ <span id="ivaa">0.00</span></td>
+              </tr>
+               <tr>
+                <th>Descuento:</th>
+                <td><input type="number" class="form-control" id="descuento" name="descuento" onchange="totalGeneral();" placeholder="0.00" value="0" style="width: 100px;" ></td> </tr>
+              <tr>
+                <th>Total:</th>
+                <td>$ <b><span id="total_general">0.00</span></b></td>
+                <input type="text" class="form-control hide" id="total_general_g" name="total_general_g"  >
+                <input type="text" class="form-control hide" id="total_general_t" name="total_general_t"  >
+
+              </tr>
+            </table>
+          </div>
+        </div>
+      
+        <!-- /.col -->
+      </div>
 
 
                     <div class="col-md-12">
@@ -100,10 +183,10 @@
                   <div class="box-footer">
 
 
-                   <button type="submit" class="btn btn-primary">Guardar</button>
+                   <button id="ingresar" class="btn btn-primary">Guardar</button>
                   </div>
                   </div>
-                </form>
+              
 
 
                  
@@ -141,6 +224,17 @@
 @section('javascript')
 <script>
 
+	var globalItems = [];
+	var articulos = [];
+	var totales = [];
+	var arti_creados = [];
+	var i = 1;
+	var sub_total = [];
+	var suma = 0.00;
+	var sub_totall;
+
+	var numero = 0;
+
 
     CargarSelects();
 
@@ -152,20 +246,98 @@
     });
 
 
+    @if ($pago)
+
+    numero = {{$pago->id}};
+
+
+    document.getElementById('sub_total').innerHTML = parseFloat('{{$pago->subtotal}}').toFixed(2);
+    document.getElementById('ivaa').innerHTML = parseFloat('{{$pago->iva}}').toFixed(2);
+    document.getElementById('total_general').innerHTML = parseFloat('{{$pago->total}}').toFixed(2);
+    $("#descuento").val({{$pago->descuento}}).trigger('change');
+ 
+
+    $('[name="importe"]').val({{$pago->importe}}).trigger('change');
+
+
+   // document.getElementById('importe').innerHTML = parseFloat('{{$pago->importe}}').toFixed(2);
+
+
+
+
+    $.ajax({
+        url: "{{ route('getPagosItems') }}",
+        type: 'GET',
+        dataType: 'json',
+        data: {
+          "id": {{$pago->id}}
+        }
+      })
+      .done(function(msg) {
+
+        var ii=0;
+
+        msg.forEach(function(item) {
+
+          var iva = item.iva;
+          sub_totall = item.sub_total;
+          var total_general = item.total_general;
+
+            if(!articulos.includes(item.id)) {
+     
+                
+                $("#mensaje").hide();
+
+                $('#table-articulos tbody').append('<tr>'+
+                    
+                  '<td style="width: 90px;">'+ item.nombre +'</td>'+
+                  '<td> <input type="number" class="form-control" style="width: 70px;" min="1" id="cantidad'+ i+'" name="cantidad'+ i+'" value="1" onchange="sumar('+ item.id +',this.value,'+ i+');"  > </td>'+
+                  '<td> <input type="text" class="form-control" style="width: 70px;" id="precio'+i+'" name="precio'+ i+'" value="'+ item.importe+'" onchange="precio('+i+','+ item.id +');" ></td>'+
+                  '<td> <span id="spTotal'+ i+'"></span></td>'+
+                  '<td align="center"><button class="btn btn-danger btn-xs" onclick="eliminarArticulo(this,'+ item.id +');"><i class="fa fa-times" aria-hidden="true"></i></button></td>'+
+                  '</tr>'); 
+
+                
+                 $("#cantidad"+i).val(item.cantidad).trigger('change');
+                //$("#precio"+i).val(item.precio).trigger('change');
+          
+                 
+                 document.getElementById('spTotal'+i).innerHTML = parseFloat(item.total).toFixed(2);
+                
+                i++;
+
+                globalItems.push(item);
+                articulos.push(item.id);
+
+            }
+
+                 $("#importe"+i).val(item.cantidad).trigger('change');
+
+
+        });
+
+        
+      })
+      .fail(function(msg) {
+        console.log("error en getAlbaranesItems");
+      });
+
+
+
+
+
+    @endif
 
 
 	$('#idprofesional').click(function(){CargarSelects(); });
 	$('#obras').click(function(){CargarSelects(); });
-	$('#idliquidacion').click(function(){CargarSelects(); });
+	//$('#idliquidacion').click(function(){CargarSelects(); });
 
 
-
-	$('[name="idliquidacion"]').click(function(){
-
-      CargarSelects();
-
+	$('[name="obras"]').on('select2:select', function (e) {
+        var data = e.params.data;
+        selectArticleID(data.id);
     });
-
 
 
     $('#btn-ver-cliente').click(function(){
@@ -205,8 +377,11 @@
     });
 
 
+	$('#ingresar').click(function(){
+      var tipo = "guardar";
+      agregarOrden(tipo); 
 
-  
+    });
 
 
 	function CargarSelects(){
@@ -241,35 +416,23 @@
 	      $("#idliquidacion").html(filal);
 
 
+
 	      @if ($pago)
 
 	      
 		      $("#idprofesional").val("{{$pago->idprofesional}}").trigger('change');     
-		     // $("#obras").val("{{$pago->idobra}}").trigger('change');     
 		      $("#idliquidacion").val("{{$pago->idliquidacion}}").trigger('change'); 
 
 		        
 		      var images = "{{$pago->obras}}"; 
-		      var images1 = images.split("[");
-		      var images2 = images1[1].split("]");
-		      var images3 = images2[0].split(",");
+		      var images1 = images.split(",");
+		      var ii=[];
 
-		      
+		      for (var i = 0; i < images1.length; i++) {
+		      	  ii.push(images1[i])
+		      };
 
-		      //var posicion = arti_creados.indexOf(id);
-              //var removed1 = globalItems.splice(posicion, 1);
-
-
-
-		     // console.log(images3)
-		      /*var text="";
-
-		      for (var i = 0; i < dd.length - 1; i++) {
-		         alert(dd[i])
-		      };*/
-
-		      //$("#obras").val(images3);
-
+		      $("#obras").val(ii);
 
 
 
@@ -281,8 +444,286 @@
 	}
 
 
+	function selectArticleID(id){
+      $.ajax({
+        url: "{{ route('getObra') }}",
+        type: 'GET',
+        dataType: 'json',
+        data: {
+          "id": id
+        }
+      })
+      .done(function(msg) {
+
+        msg.forEach(function(item) {
+        //agregamos los items a la tabla.
+
+          
+          
+          if(!articulos.includes(item.id)) {
+   
+              
+              $("#mensaje").hide();
+
+              $('#table-articulos tbody').append('<tr>'+
+                  
+                  '<td style="width: 90px;">'+ item.nombre +'</td>'+
+                  '<td> <input type="number" class="form-control" style="width: 70px;" min="1" id="cantidad'+ i+'" name="cantidad'+ i+'" value="1" onchange="sumar('+ item.id +',this.value,'+ i+');"  > </td>'+
+                  '<td> <input type="text" class="form-control" style="width: 70px;" id="precio'+i+'" name="precio'+ i+'" value="'+ item.importe+'" onchange="precio('+i+','+ item.id +');" ></td>'+
+                  '<td> <span id="spTotal'+ i+'"></span></td>'+
+                  '<td align="center"><button class="btn btn-danger btn-xs" onclick="eliminarArticulo(this,'+ item.id +');"><i class="fa fa-times" aria-hidden="true"></i></button></td>'+
+                  '</tr>'); 
+
+              $('#cantidad'+i).trigger('change'); 
+
+              i++;
 
 
+                globalItems.push(item);
+                articulos.push(item.id);
+          }
+          
+
+        });
+
+
+      })
+      .fail(function(msg) {
+        console.log("error en selectArticleID");
+      });
+    }
+
+
+    function eliminarArticulo(element,id){
+
+
+	      var item = $(element).closest("tr").find('[name="td-hidden"]').text();
+	      
+	      var posicion = arti_creados.indexOf(id);
+	      var removed1 = globalItems.splice(posicion, 1);
+	      var removed2 = articulos.splice(posicion, 1);
+	      var removed3 = totales.splice(posicion, 1);
+
+
+	      var removed4 = arti_creados.splice(posicion, 1);
+	      
+
+	      $(element).parent().parent().remove();
+	      if(globalItems.length === 0) {
+	        	$("#mensaje").show(); 
+	        	$("#articulo").val("").trigger('change');
+	      }
+	      subTotal();
+
+    }
+
+
+    function sumar (id,valor,i) {
+
+        var total = 0; 
+        
+        var articulo ={};
+        var precio = $('[name="precio'+i+'"]').val();
+
+
+    
+
+        valor = parseFloat(valor); // Convertir el valor a un entero (número).
+        total = document.getElementById('spTotal'+ i).innerHTML;
+        // Aquí valido si hay un valor previo, si no hay datos, le pongo un cero "0".
+        total = (total == null || total == undefined || total == "") ? 0 : total;
+        /* Esta es la multiplicacion. */
+        total = (parseFloat(valor) * parseFloat(precio)/100);
+        // Colocar el resultado de la multiplicacion en el control "spTotal".
+        document.getElementById('spTotal'+i).innerHTML = parseFloat(total).toFixed(2);
+
+
+        if(!arti_creados.includes(id)) {
+
+            articulo.id = id;
+            articulo.cantidad = parseFloat(valor);
+            articulo.total = parseFloat(total).toFixed(2);
+            articulo.precio = parseFloat(precio);
+            totales.push(articulo);
+            arti_creados.push(id);
+
+
+        }else{
+
+            var posicion = arti_creados.indexOf(id);
+            var removed1 = totales.splice(posicion, 1);
+            var removed2 = arti_creados.splice(posicion, 1);
+
+            articulo.id = id;
+            articulo.cantidad = parseFloat(valor);
+            articulo.total = parseFloat(total).toFixed(2);
+            articulo.precio = parseFloat(precio);
+
+            totales.push(articulo);
+            arti_creados.push(id);
+
+        }
+
+        subTotal();
+        
+    
+    }
+
+    function subTotal(){
+
+	  if(totales.length > 0){
+	    for( var j=0; j < totales.length;j++){
+	            suma = parseFloat(suma) + parseFloat(totales[j].total);
+	    }
+	  }
+
+	  document.getElementById('total_general').innerHTML = parseFloat(suma).toFixed(2);
+	  var total = document.getElementById('total_general').innerHTML;
+	  $("#total_general_t").val(total);
+	  suma= 0.00;
+
+	  totalGeneral();
+
+    }
+
+
+    function totalGeneral(){
+
+	    var descuento = $("#descuento").val();
+	    var total = document.getElementById('total_general').innerHTML;
+	    $("#total_general_g").val(total);
+
+
+	    if (descuento!="") {
+
+	     // var total = document.getElementById('total_general').innerHTML;
+	      var total = $("#total_general_t").val();
+	      total1 = (parseFloat(total).toFixed(2) - parseFloat(descuento).toFixed(2));
+	      document.getElementById('total_general').innerHTML = parseFloat(total1).toFixed(2);
+	      document.getElementById('sub_total').innerHTML = parseFloat(parseFloat(total) / parseFloat(1.19)).toFixed(2);
+	      
+
+	      var sub_total     = parseFloat(parseFloat(total) / parseFloat(1.19)).toFixed(2);
+	      var total_general = parseFloat(total).toFixed(2);
+
+	      document.getElementById('ivaa').innerHTML = parseFloat(parseFloat(total_general) - parseFloat(sub_total)).toFixed(2);
+
+	    }else{
+
+	      var total = document.getElementById('total_general').innerHTML;
+	      document.getElementById('sub_total').innerHTML = parseFloat(parseFloat(total) / parseFloat(1.19)).toFixed(2);
+	      document.getElementById('total_general').innerHTML = $("#total_general_t").val();
+	      document.getElementById('sub_total').innerHTML = parseFloat(parseFloat($("#total_general_t").val()) / parseFloat(1.19)).toFixed(2);
+
+	      var sub_total     = parseFloat(parseFloat($("#total_general_t").val()) / parseFloat(1.19)).toFixed(2);
+	      var total_general = $("#total_general_t").val();
+
+	      document.getElementById('ivaa').innerHTML = parseFloat(parseFloat(total_general) - parseFloat(sub_total)).toFixed(2);
+
+	    }
+    }
+
+
+    function agregarOrden(tipo){
+
+	  var sub_total = document.getElementById('sub_total').innerHTML;
+
+	  var ivaa = document.getElementById('ivaa').innerHTML;
+	  var total_general = document.getElementById('total_general').innerHTML;
+	  var cantidad_vacia=false;
+	  var descuento = $('[name="descuento"]').val();
+	  var i=1;
+
+
+
+	   sub_total = parseFloat(sub_total);
+	   ivaa = parseFloat(ivaa);
+	   total_general = parseFloat(total_general);
+	   descuento = parseFloat(descuento);
+
+
+
+
+
+
+	  if (!articulos.length >0) {
+
+	    if ($('#obras').val()==="") {
+	        alert("Debe seleccionar al menos una obra");
+	    };
+
+	  };
+
+
+	  while (i <= articulos.length) {
+
+	      
+	      if($('#cantidad'+i).val()===""){
+	        cantidad_vacia=false;
+	        alert("coloque total facturacion de odontólogo de cada obra seleccionada");
+	      }else{
+	        cantidad_vacia=true;
+	      }
+	      i++;
+
+	  };
+
+
+	  if (($('#importe').val()!="")&&($('#idprofesional').val()!="")&&($('#idliquidacion').val()!="")&& (cantidad_vacia)) {
+
+	      if(tipo ==="guardar"){
+
+
+	      	$.ajax({
+	          url: "{{ route('pagos.store') }}",                                          
+	          type: "POST",                 
+	          dataType: 'json',
+	          contentType: 'application/json',
+	          data: JSON.stringify({ 
+	            "_token":         "{{ csrf_token() }}",
+	            "idliquidacion":  $('[name="idliquidacion"]').val(),
+	            "importe":        $('[name="importe"]').val(),
+	            "idprofesional":  $('[name="idprofesional"]').val(),
+	            "fecha":          "{{$date}}",
+	            "iva":            ivaa,
+	            "descuento":      descuento,
+	            "subtotal":       sub_total,
+	            "total":          total_general,
+	            "obras" :         totales,
+                "tipo":          "{{$tipo}}",
+                "id":             numero,
+
+	           
+	          })
+	        })
+	        .done(function(msg) {
+
+	        	
+
+	            var message = 'La liquidación Fue creada correctamente';
+	            window.location.href = "{{ route('pagos.index') }}";
+
+
+	    
+	        
+
+
+	        })
+	        .fail(function(msg) {
+	        
+	        });
+
+
+	            
+
+	       
+
+	      };
+
+	      
+	  };
+
+    }
 
 
 

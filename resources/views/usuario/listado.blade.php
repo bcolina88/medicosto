@@ -42,7 +42,7 @@ Listado de usuarios
                   <tr>
                     <th>Usuario(E-mail)</th>
                     <th>Nombre y Apellido</th>
-                    <th>Tipo</th>
+                    <th>Rol</th>
                     <th>Estado</th>
                     @if (Auth::user()->idrole != 3)
                     <th>Acciones</th>

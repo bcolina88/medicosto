@@ -20,11 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('domicilio')->nullable();
             $table->string('telefono')->nullable();
             $table->string('fecha_nacimiento')->nullable();
-            $table->float('sueldo', 12, 2)->nullable();
             $table->string('contacto_emergencia')->nullable();
-            $table->string('fecha_contrato')->nullable();
-            $table->string('fecha_despido')->nullable();
-            $table->text('images')->nullable();
             $table->boolean('active');
             $table->integer('idrole')->unsigned();
             $table->string('email')->unique();

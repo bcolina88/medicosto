@@ -67,10 +67,17 @@ Detalle de Usuario
                           </p>
 
 
-                          <p><b>F. contrato</b></p>
+                          <p><b>Estado</b></p>
                           <p>
 
-                             @if($users->fecha_contrato == null) N/D @else {{$users->fecha_contrato}} @endif
+                          
+                             @if($users->active)
+	                          <p >Activo</p>
+	                        @else
+	                          <p >Inhactivo</p>
+	                        @endif
+                          
+
 
                           </p>
 

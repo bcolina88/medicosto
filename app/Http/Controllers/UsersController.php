@@ -93,53 +93,12 @@ class UsersController extends Controller
         ]);
 
 
-        $images =  '';
-
-
-
-        if ($request->declaracion ==="on") {
-          $declaracion = true;
-        }else{
-          $declaracion = false;
-        }
 
 
 
         if($request->tipo === "guardar"){
 
 
-
-            if ($request->file('images')) {
-
-
-                            $photos = $request->file('images');
-
-                            if (!is_array($photos)) {
-                                $photos = [$photos];
-                            }
-
-                            if (!is_dir($this->photos_path)) {
-                                mkdir($this->photos_path, 0777);
-                            }
-
-
-                            for ($i = 0; $i < count($photos); $i++) {
-
-                                $photo = $photos[$i];
-                                $name = sha1(date('YmdHis') . str_random(30));
-                                $save_name = $name . '.' . $photo->getClientOriginalExtension();
-                                $resize_name = $name . str_random(2) . '.' . $photo->getClientOriginalExtension();
-
-                                $photo->move($this->photos_path, $save_name);
-                            
-                               
-                                $src = url("/{$this->photos_path}/{$save_name}");
-
-                                $images = $src.','.$images;
-
-                            }
-
-            }
 
 
             $user = User::firstOrCreate([
@@ -151,11 +110,7 @@ class UsersController extends Controller
              'active'          => 1,
              'domicilio'       => $request->domicilio,
              'fecha_nacimiento'=> $request->fecha_nacimiento,
-             'sueldo'       => $request->sueldo,
              'contacto_emergencia' => $request->contacto_emergencia,
-             'fecha_contrato'  => $request->fecha_contrato,
-             'fecha_despido'   => $request->fecha_despido,
-             'images'          => $images,
              'telefono'        => $request->telefono,
 
             ]);
@@ -169,130 +124,6 @@ class UsersController extends Controller
 
         }  
 
-
-        if($request->tipo === "editar"){ 
-
-
-            if ($request->file('images')) {
-
-
-                        $photos = $request->file('images');
-
-                        if (!is_array($photos)) {
-                            $photos = [$photos];
-                        }
-
-                        if (!is_dir($this->photos_path)) {
-                            mkdir($this->photos_path, 0777);
-                        }
-
-
-                        for ($i = 0; $i < count($photos); $i++) {
-
-                            $photo = $photos[$i];
-                            $name = sha1(date('YmdHis') . str_random(30));
-                            $save_name = $name . '.' . $photo->getClientOriginalExtension();
-                            $resize_name = $name . str_random(2) . '.' . $photo->getClientOriginalExtension();
-
-                            $photo->move($this->photos_path, $save_name);
-                            
-                               
-                            $src = url("/{$this->photos_path}/{$save_name}");
-
-                            $images = $src.','.$images;
-
-                        }
-
-
-
-
-
-                        if($request->password != null){
-         
-                        } else {
-                         unset($request->password);
-                        }
-
-                        $user = User::with(['role'])->find($request->id);
-
-
-
-                        $user->fill([
-                         'nombre'          => $request->nombre,
-                         'apellido'        => $request->apellido,
-                         'email'           => $request->email, 
-                         'idrole'          => $request->idrole,
-                         'password'        => bcrypt($request->password),
-                         'domicilio'       => $request->domicilio,
-                         'fecha_nacimiento'=> $request->fecha_nacimiento,
-                         'sueldo'       => $request->sueldo,
-                         'contacto_emergencia' => $request->contacto_emergencia,
-                         'fecha_contrato'  => $request->fecha_contrato,
-                         'fecha_despido'   => $request->fecha_despido,
-                         'images'          => $images,
-                         'active'          => $request->estado,
-                         'telefono'        => $request->telefono,
-
-
-                        ]);
-
-
-
-                        $user->save();
-
-                        session::flash('message','El usuario Fue Actualizado Correctamente');
-                        return redirect(route('usuarios.index')); 
-
-
-
-            }else{
-
-
-
-                        if($request->password != null){
-         
-                        } else {
-                         unset($request->password);
-                        }
-
-                        $user = User::with(['role'])->find($request->id);
-
-
-
-                        $user->fill([
-                         'nombre'          => $request->nombre,
-                         'apellido'        => $request->apellido,
-                         'email'           => $request->email, 
-                         'idrole'          => $request->idrole,
-                         'password'        => bcrypt($request->password),
-                         'domicilio'       => $request->domicilio,
-                         'fecha_nacimiento'=> $request->fecha_nacimiento,
-                         'sueldo'       => $request->sueldo,
-                         'contacto_emergencia' => $request->contacto_emergencia,
-                         'fecha_contrato'  => $request->fecha_contrato,
-                         'fecha_despido'   => $request->fecha_despido,
-                         'active'          => $request->estado,
-                         'telefono'        => $request->telefono,
-
-                         
-
-                        ]);
-
-
-
-                        $user->save();
-
-                        session::flash('message','El usuario Fue Actualizado Correctamente');
-                        return redirect(route('usuarios.index')); 
-
-
-
-            }
-
-
-
-
-        } 
 
    
     }
@@ -361,37 +192,7 @@ class UsersController extends Controller
 
 
 
-            if ($request->file('images')) {
 
-
-                            $photos = $request->file('images');
-
-                            if (!is_array($photos)) {
-                                $photos = [$photos];
-                            }
-
-                            if (!is_dir($this->photos_path)) {
-                                mkdir($this->photos_path, 0777);
-                            }
-
-
-                            for ($i = 0; $i < count($photos); $i++) {
-
-                                $photo = $photos[$i];
-                                $name = sha1(date('YmdHis') . str_random(30));
-                                $save_name = $name . '.' . $photo->getClientOriginalExtension();
-                                $resize_name = $name . str_random(2) . '.' . $photo->getClientOriginalExtension();
-
-                                $photo->move($this->photos_path, $save_name);
-                            
-                               
-                                $src = url("/{$this->photos_path}/{$save_name}");
-
-                                $images = $src.','.$images;
-
-                            }
-
-            }
 
 
             $user = User::firstOrCreate([
@@ -403,11 +204,7 @@ class UsersController extends Controller
              'active'          => 1,
              'domicilio'       => $request->domicilio,
              'fecha_nacimiento'=> $request->fecha_nacimiento,
-             'sueldo'       => $request->sueldo,
              'contacto_emergencia' => $request->contacto_emergencia,
-             'fecha_contrato'  => $request->fecha_contrato,
-             'fecha_despido'   => $request->fecha_despido,
-             'images'          => $images,
              'telefono'        => $request->telefono,
 
 
@@ -426,37 +223,6 @@ class UsersController extends Controller
         if($request->tipo === "editar"){ 
 
 
-            if ($request->file('images')) {
-
-
-                        $photos = $request->file('images');
-
-                        if (!is_array($photos)) {
-                            $photos = [$photos];
-                        }
-
-                        if (!is_dir($this->photos_path)) {
-                            mkdir($this->photos_path, 0777);
-                        }
-
-
-                        for ($i = 0; $i < count($photos); $i++) {
-
-                            $photo = $photos[$i];
-                            $name = sha1(date('YmdHis') . str_random(30));
-                            $save_name = $name . '.' . $photo->getClientOriginalExtension();
-                            $resize_name = $name . str_random(2) . '.' . $photo->getClientOriginalExtension();
-
-                            $photo->move($this->photos_path, $save_name);
-                            
-                               
-                            $src = url("/{$this->photos_path}/{$save_name}");
-
-                            $images = $src.','.$images;
-
-                        }
-
-
 
 
                         if($request->password != null){
@@ -473,11 +239,7 @@ class UsersController extends Controller
                              'password'        => $pass,
                              'domicilio'       => $request->domicilio,
                              'fecha_nacimiento'=> $request->fecha_nacimiento,
-                             'sueldo'       => $request->sueldo,
                              'contacto_emergencia' => $request->contacto_emergencia,
-                             'fecha_contrato'  => $request->fecha_contrato,
-                             'fecha_despido'   => $request->fecha_despido,
-                             'images'          => $images,
                              'active'          => $request->estado,
                              'telefono'        => $request->telefono,
 
@@ -504,11 +266,7 @@ class UsersController extends Controller
                              'idrole'          => $request->idrole,
                              'domicilio'       => $request->domicilio,
                              'fecha_nacimiento'=> $request->fecha_nacimiento,
-                             'sueldo'       => $request->sueldo,
                              'contacto_emergencia' => $request->contacto_emergencia,
-                             'fecha_contrato'  => $request->fecha_contrato,
-                             'fecha_despido'   => $request->fecha_despido,
-                             'images'          => $images,
                              'active'          => $request->estado,
                              'telefono'        => $request->telefono,
 
@@ -524,75 +282,8 @@ class UsersController extends Controller
 
 
 
-                        
+       
 
-
-            }else{
-
-                        
-                        
-                        if($request->password  != null){
-
-                            $pass = bcrypt($request->password);
-                            $user = User::with(['role'])->find($id);
-
-                            $user->fill([
-                             'nombre'          => $request->nombre,
-                             'apellido'        => $request->apellido,
-                             'idrole'          => $request->idrole,
-                             'password'        => $pass,
-                             'domicilio'       => $request->domicilio,
-                             'fecha_nacimiento'=> $request->fecha_nacimiento,
-                             'sueldo'       => $request->sueldo,
-                             'contacto_emergencia' => $request->contacto_emergencia,
-                             'fecha_contrato'  => $request->fecha_contrato,
-                             'fecha_despido'   => $request->fecha_despido,
-                             'active'          => $request->estado,
-                             'telefono'        => $request->telefono,
-
-                             
-
-                            ]);
-
-
-                            $user->save();
-
-                            session::flash('message','El usuario Fue Actualizado Correctamente');
-                            return redirect(route('usuarios.index')); 
-
-
-         
-                        } else {
-
-                            $user = User::with(['role'])->find($id);
-
-                            $user->fill([
-                             'nombre'          => $request->nombre,
-                             'apellido'        => $request->apellido,
-                             'idrole'          => $request->idrole,
-                             'domicilio'       => $request->domicilio,
-                             'fecha_nacimiento'=> $request->fecha_nacimiento,
-                             'sueldo'       => $request->sueldo,
-                             'contacto_emergencia' => $request->contacto_emergencia,
-                             'fecha_contrato'  => $request->fecha_contrato,
-                             'fecha_despido'   => $request->fecha_despido,
-                             'active'          => $request->estado,
-                             'telefono'        => $request->telefono,
-
-                             
-
-                            ]);
-
-
-                            $user->save();
-
-                            session::flash('message','El usuario Fue Actualizado Correctamente');
-                            return redirect(route('usuarios.index')); 
-                           
-                        }
-
-
-            }
 
 
         } 

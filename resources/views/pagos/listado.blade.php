@@ -35,7 +35,6 @@ Listado de Liquidaciones
                     <th>Nro</th>
                     <th>Fecha Pago</th>
                     <th>Importe</th>
-         
                     <th>Profesional</th>
                     <th>Acciones</th>
                   </tr>
@@ -48,15 +47,18 @@ Listado de Liquidaciones
                     <td>{{$medi->fecha}}</td>
                     <td>{{$medi->importe}}</td>
        
-                    <td>{{$medi->profesional->nombre}} {{$medi->profesional->nombre}} - {{$medi->profesional->matricula}}</td>
+                    <td>{{$medi->profesional->nombre}} {{$medi->profesional->apellido}} - {{$medi->profesional->matricula}}</td>
             
             
                      <td>
                       <div class="btn-group">
                       {!! Form::model($medi, ['route'=>['pagos.update', $medi->id], 'method'=>'DELETE']) !!}
 
+                          
+                      	  <a href="{{route("reciboPago", ['id' => $medi->id])}}" class='btn btn-info fa fa-file-pdf-o'><b></b></a> 
+
                           @if (\App\Http\Controllers\RolesController::editar(9))
-			               <a href="{{route("pagos.edit", ['id' => $medi->id])}}" onclick="return confirm('Seguro que Desea editar Liquidación #{{$medi->id}}')" class="btn btn-default btn-warning fa fa-pencil hide"><b></b></a> 
+			               <a href="{{route("pagos.edit", ['id' => $medi->id])}}" onclick="return confirm('Seguro que Desea editar Liquidación #{{$medi->id}}')" class="btn btn-default btn-warning fa fa-pencil "><b></b></a> 
 			              @endif
 
 

@@ -12,13 +12,8 @@ Crear Liquidación
     </section>
 
 
- {!! Form::open(['route'=>'pagos.store','enctype'=>'multipart/form-data','method'=>'POST','files'=>'true','accept-charset'=>'UTF-8']) !!}
-
-
 
 @include('pagos.forms.pago') 
-
-{!! Form::close() !!}
 
 
 
