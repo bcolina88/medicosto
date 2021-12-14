@@ -1,16 +1,16 @@
 @extends('layout.template')
 @section('title')
-Editar Descuento/Retención 
+Editar Retención 
 @endsection
 @section('content')
 
   <section class="content-header">
       <h1>
-        Editar Descuento/Retención
+        Editar Retención
         <small></small>
     </section>
 
- {!! Form::model($liquidacion, ['route'=>['liquidaciones.update', $liquidacion->id], 'method'=>'PUT']) !!}
+ {!! Form::model($liquidacion, ['route'=>['retenciones.update', $liquidacion->id], 'method'=>'PUT']) !!}
 @include('liquidaciones.forms.liquidacion')
 
 

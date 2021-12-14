@@ -250,7 +250,7 @@
         @if(\App\Http\Controllers\RolesController::ver(8))
 
         <li class="treeview">
-              <a href="#"> <i class="fa fa-archive"></i> Descuentos/Retenc.
+              <a href="#"> <i class="fa fa-archive"></i> Retenciones
                 <span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
                 </span>
@@ -259,12 +259,12 @@
 
 
                   @if(\App\Http\Controllers\RolesController::agregar(8))
-                  <li><a href="{{ route('liquidaciones.create') }}"><i class="fa fa-circle"></i> Crear Descuento/Retenc.</a></li>
+                  <li><a href="{{ route('retenciones.create') }}"><i class="fa fa-circle"></i> Crear Retención</a></li>
                   @endif
    
 
                   @if(\App\Http\Controllers\RolesController::ver(8))
-                  <li><a href="{{ route('liquidaciones.index') }}"><i class="fa fa-circle"></i> Listado Descuento/Retenc.</a></li>
+                  <li><a href="{{ route('retenciones.index') }}"><i class="fa fa-circle"></i> Listado Retenciones</a></li>
                   @endif
 
                
@@ -316,12 +316,12 @@
               <ul class="treeview-menu">
 
                    @if(\App\Http\Controllers\RolesController::agregar(9))
-                   <li><a href="{{ route('pagos.create') }}"><i class="fa fa-circle"></i> Crear Liquidación</a></li>
+                   <li><a href="{{ route('liquidaciones.create') }}"><i class="fa fa-circle"></i> Crear Liquidación</a></li>
                    @endif
 
 
                    @if(\App\Http\Controllers\RolesController::agregar(9))
-                   <li><a href="{{ route('pagos.index') }}"><i class="fa fa-circle"></i> Listado de Liquidación</a></li>
+                   <li><a href="{{ route('liquidaciones.index') }}"><i class="fa fa-circle"></i> Listado de Liquidación</a></li>
         		   @endif
                
               </ul>

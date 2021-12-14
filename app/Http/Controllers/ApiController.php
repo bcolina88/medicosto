@@ -92,6 +92,9 @@ class ApiController extends Controller
      public function getObra(Request  $request)
     {
       $article = Obra::where('id',$request->id)->get();
+      $retencion = Liquidacion::where('id', $request->retencion)->first();
+      $article[0]['retencion']= $retencion;
+
       return json_encode($article);
 
     }  

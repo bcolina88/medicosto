@@ -42,8 +42,8 @@ Route::resource('/usuarios','UsersController');
 Route::resource('/roles','RolesController');
 Route::resource('/obras','ObraController');
 Route::resource('/profesionales','ProfesionalesController');
-Route::resource('/liquidaciones','LiquidacionController');
-Route::resource('/pagos','PagoController');
+Route::resource('/retenciones','LiquidacionController');
+Route::resource('/liquidaciones','PagoController');
 
 
 

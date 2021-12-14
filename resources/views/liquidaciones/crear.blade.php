@@ -1,18 +1,18 @@
 @extends('layout.template')
 @section('title')
-Crear Descuento/Retención 
+Crear Retención 
 @endsection
 
 
 @section('content')
   <section class="content-header">
       <h1>
-        Crear Descuento/Retención
+        Crear Retención
         <small></small>
     </section>
 
 
- {!! Form::open(['route'=>'liquidaciones.store','enctype'=>'multipart/form-data','method'=>'POST','files'=>'true','accept-charset'=>'UTF-8']) !!}
+ {!! Form::open(['route'=>'retenciones.store','enctype'=>'multipart/form-data','method'=>'POST','files'=>'true','accept-charset'=>'UTF-8']) !!}
 
 
 

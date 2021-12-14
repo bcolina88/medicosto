@@ -37,118 +37,53 @@
 
 
                    <div class="col-md-12">
-                     <h3 >Federación<hr>
+                     <h3 >% por factura<hr>
                     </div>
                     <br>
 
 
                     <div class="col-md-4">
                      
-                      <label for="exampleInputPassword1">Cuota</label> 
+                      <label for="exampleInputPassword1">Federación</label>  <span style="color: #E6674A;">*</span>
                  
-                     {!! Form::text('federacion_cuota', null, ['class' => 'form-control', 'placeholder' => '0.00']) !!}
+                     {!! Form::text('factura_federacion', null, ['class' => 'form-control', 'placeholder' => '0.00', 'required']) !!}
                     </div>
 
 
 
                     <div class="col-md-4">
-                         <br>
-	                   
-	                    <div class="form-group">
-	                          <label>
-			                      Liquida Imp. Ganancias
-			                    </label>
-			                  <div class="radio">
-			                    <label>
-			                      <input type="radio" name="liquida_imp" id="liquida_imp1" value="true" >
-			                      Corresponde
-			                    </label>
-			                  </div>
-			                  <div class="radio">
-			                    <label>
-			                      <input type="radio" name="liquida_imp" id="liquida_imp2" value="false">
-			                      No Corresponde
-			                    </label>
-			                  </div>
-			                  
-			            </div>
-
-
-
-	                </div>
-
-
-	                <div class="col-md-4" >
-	                    <label class="hide" id="liquida">
                      
-                            <label for="exampleInputPassword1">Liquida Imp. Ganancias</label> 
-                     		{!! Form::text('liquida_imp_gana', null, ['class' => 'form-control', 'placeholder' => '0.00']) !!}
-                        </label>
-                    
-
+                      <label for="exampleInputPassword1">Colegio</label>  <span style="color: #E6674A;">*</span>
+                 
+                     {!! Form::text('factura_colegio', null, ['class' => 'form-control', 'placeholder' => '0.00', 'required']) !!}
                     </div>
 
 
+
+
+
+	          
                     <div class="col-md-12">
-                     <h3 >Colegio <hr>
+                     <h3 >Cuotas de Socios<hr>
                     </div>
 
 
                     <div class="col-md-4">
                       <br>
-                      <label for="exampleInputPassword1">Cuota</label> 
+                      <label for="exampleInputPassword1">Federación</label>  <span style="color: #E6674A;">*</span>
                   
-                       {!! Form::text('colegio_cuota', null, ['class' => 'form-control', 'placeholder' => '0.00']) !!}
+                       {!! Form::text('federacion_cuota', null, ['class' => 'form-control', 'placeholder' => '0.00', 'required']) !!}
 	                   
                     </div>
 
                     <div class="col-md-4"> 
                       <br>
-                      <label for="exampleInputPassword1">Alícuota</label> 
+                      <label for="exampleInputPassword1">Colegio</label>  <span style="color: #E6674A;">*</span>
                       <div class="form-group">
-                        {!! Form::text('colegio_alicuota', null, ['class' => 'form-control', 'placeholder' => '0' ]) !!}
+                        {!! Form::text('colegio_cuota', null, ['class' => 'form-control', 'placeholder' => '0.00', 'required' ]) !!}
                       </div>     
                     </div> 
 
-
-
-
-                    <div class="col-md-12">
-                     <h3 >Otros deducciones <hr>
-                    </div>
-
-
-                    <div class="col-md-4">
-                      <br>
-                      <label for="exampleInputPassword1">Compra materiales</label> 
-                  
-                       {!! Form::text('compra_materiales', null, ['class' => 'form-control', 'placeholder' => '0.00']) !!}
-	                   
-                    </div>
-
-                    <div class="col-md-4">
-                      <br>
-                      <label for="exampleInputPassword1">Seguro Adicional</label> 
-                  
-                       {!! Form::text('seguro_adicional', null, ['class' => 'form-control', 'placeholder' => '0.00']) !!}
-	                   
-                    </div>
-
-                    <div class="col-md-4">
-                      <br>
-                      <label for="exampleInputPassword1">Gtos. Admin. Caja. Prev.</label> 
-                  
-                       {!! Form::text('gastos_admin', null, ['class' => 'form-control', 'placeholder' => '0.00']) !!}
-	                   
-                    </div>
-
-                    <div class="col-md-4">
-                      <br>
-                      <label for="exampleInputPassword1">Aporte Caja. Prev.</label> 
-                  
-                       {!! Form::text('aporte_caja', null, ['class' => 'form-control', 'placeholder' => '0.00']) !!}
-	                   
-                    </div>
 
 
 

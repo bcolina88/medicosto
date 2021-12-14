@@ -16,7 +16,6 @@ class CreateObrasTable extends Migration
         Schema::create('obras', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nombre');
-            $table->integer('importe');
             $table->boolean('active');
 
             $table->timestamps();

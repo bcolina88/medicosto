@@ -257,7 +257,7 @@ class PagoController extends Controller
         $pago->save();
 
         session::flash('message','La liquidación fue actualizada correctamente');
-        return redirect(route('pagos.index')); 
+        return redirect(route('liquidaciones.index')); 
 
    }
 
@@ -271,38 +271,9 @@ class PagoController extends Controller
     {
     	Pago::destroy($id);
         session::flash('message','La liquidación fue eliminada correctamente');
-        return redirect(route('pagos.index')); 
+        return redirect(route('liquidaciones.index')); 
     }
 
-
-     /**
-     * Activa al usuario modificando su estatus
-     */
-    public function activate($id)
-    {
-        $obras = Obra::where('id', $id)->first();
-
-        $obras->active = 1;
-        $obras->save();
-
-
-        return redirect(route('obras.index')); 
-
-    }
-
-    /**
-     * desactiva al usuario modificando su estatus
-     */
-    public function deactivate($id)
-    {
-        $Obra = Obra::where('id', $id)->first();
-
-
-        $Obra->active = 0;
-        $Obra->save();
-
-        return redirect(route('obras.index')); 
-    }
 
 
     public function pdf($id)

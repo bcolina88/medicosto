@@ -43,8 +43,8 @@
 
 	                    <div class="col-md-6">
 	                        <br>
-	                        <label for="exampleInputPassword1">Descuento/Retención</label> <span style="color: #E6674A;">*</span>
-	                        <select class="form-control select2" id="idliquidacion" name="idliquidacion" style="width: 100%;" required></select>
+	                        <label for="exampleInputPassword1">Retención</label> <span style="color: #E6674A;">*</span>
+	                        <select class="form-control select2" id="idliquidacion" name="idliquidacion" style="width: 100%;" required onchange="cambio();"></select>
 	                    	
 
 	                    	<div class="btn-group">
@@ -94,7 +94,7 @@
                 <tr>
                   <th style="width: 90px;">Nombre Obra S.</th>
                   <th style="width: 50px;">Total de Fact. de Odont.</th>
-                  <th style="width: 50px;">% de cobro de factura</th>
+                  <th style="width: 50px;">% de cobro de factura por federación</th>
                   <th style="width: 50px;">Total</th>
                   <th style="width: 50px;">Acciones</th>
                 </tr>
@@ -146,7 +146,7 @@
                 <td>$ <span id="sub_total">0.00</span></td>
               </tr>
               <tr>
-                <th>Iva (19%):</th>
+                <th>% de cobro de factura por colegio (<span id="porcentaje">0</span>%):</th>
                 <td>$ <span id="ivaa">0.00</span></td>
               </tr>
                <tr>
@@ -205,12 +205,12 @@
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-           <h4 class="modal-title">Descuento/Retención</h4>
+           <h4 class="modal-title">Retención</h4>
         </div>
         <div class="modal-body" id="ver-cliente">
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-light-grey" data-dismiss="modal" style="font-size: 14px;">Salir</button>
+          <button type="button" class="btn btn-light-grey" data-dismiss="modal" id="salir_ver_cliente" style="font-size: 14px;">Salir</button>
 
         </div>
       </div>
@@ -234,6 +234,8 @@
 	var sub_totall;
 
 	var numero = 0;
+	var porcentaje = 0;
+
 
 
     CargarSelects();
@@ -258,11 +260,6 @@
  
 
     $('[name="importe"]').val({{$pago->importe}}).trigger('change');
-
-
-   // document.getElementById('importe').innerHTML = parseFloat('{{$pago->importe}}').toFixed(2);
-
-
 
 
     $.ajax({
@@ -291,7 +288,7 @@
                 $('#table-articulos tbody').append('<tr>'+
                     
                   '<td style="width: 90px;">'+ item.nombre +'</td>'+
-                  '<td> <input type="number" class="form-control" style="width: 70px;" min="1" id="cantidad'+ i+'" name="cantidad'+ i+'" value="1" onchange="sumar('+ item.id +',this.value,'+ i+');"  > </td>'+
+                  '<td> <input type="text" class="form-control" style="width: 70px;" min="1" id="cantidad'+ i+'" name="cantidad'+ i+'" value="1" onchange="sumar('+ item.id +',this.value,'+ i+');"  > </td>'+
                   '<td> <input type="text" class="form-control" style="width: 70px;" id="precio'+i+'" name="precio'+ i+'" value="'+ item.importe+'" onchange="precio('+i+','+ item.id +');" ></td>'+
                   '<td> <span id="spTotal'+ i+'"></span></td>'+
                   '<td align="center"><button class="btn btn-danger btn-xs" onclick="eliminarArticulo(this,'+ item.id +');"><i class="fa fa-times" aria-hidden="true"></i></button></td>'+
@@ -329,21 +326,42 @@
     @endif
 
 
-	$('#idprofesional').click(function(){CargarSelects(); });
-	$('#obras').click(function(){CargarSelects(); });
-	//$('#idliquidacion').click(function(){CargarSelects(); });
+	//$('#idprofesional').click(function(){CargarSelects(); });
+	//$('#obras').click(function(){CargarSelects(); });
 
+	
 
 	$('[name="obras"]').on('select2:select', function (e) {
-        var data = e.params.data;
-        selectArticleID(data.id);
+
+		  if ($('#idliquidacion').val()==="") {
+
+
+               alert("Debe seleccionar una Retención");
+
+
+	      }else{
+
+	      	 var retencion = $('#idliquidacion').val();
+
+	      	 var data = e.params.data;
+        	 selectArticleID(data.id,retencion);
+	      }
+       
     });
+
+
+    $('#salir_ver_cliente').click(function(){
+
+        CargarRetencion();
+
+    });
+
 
 
     $('#btn-ver-cliente').click(function(){
 
       if ($('#idliquidacion').val()==="") {
-          alert("Debe seleccionar un Descuento/Retención");
+          alert("Debe seleccionar una Retención");
       }else{ 
 
           $.ajax({
@@ -364,7 +382,8 @@
 
           	};*/
 
-            $('#ver-cliente').html('<section class="invoice"> <div class="row"> <div class="col-xs-12"> <h2 class="page-header"> <i class="fa fa-money"> Descuento #'+msg.id+'</i> <small class="pull-right">Fecha: '+msg.fecha+'</small> </h2> </div> </div> <div class="row invoice-info"> <div class="col-sm-6 invoice-col"> <address> <b>Cuota F.O.R.N: </b> $ '+parseFloat(msg.federacion_cuota).toFixed(2)+' <br> <b>Cuota Colegio:</b> $ '+parseFloat(msg.colegio_cuota).toFixed(2)+' <br> <b>Aporte Caja. Prev.:</b> $ '+parseFloat(msg.aporte_caja).toFixed(2)+'<br> <b>Gtos. Admin. Caja. Prev.:</b> $ '+parseFloat(msg.gastos_admin).toFixed(2)+'<br></address> </div> <div class="col-sm-6 invoice-col"> <address>  <b>Alícuota Colegio: </b> $ '+parseFloat(msg.colegio_alicuota).toFixed(2)+'<br> <b>Liquida Imp. Ganancias: </b> $ '+parseFloat(msg.liquida_imp_gana).toFixed(2)+'<br> <b>Compra materiales: </b> $ '+parseFloat(msg.compra_materiales).toFixed(2)+'<br><b>Seguro Adicional: </b> $ '+parseFloat(msg.seguro_adicional).toFixed(2)+'<br></address> </div> </div> </section>');
+
+            $('#ver-cliente').html('<section class="invoice"> <div class="row"> <div class="col-xs-12"> <h2 class="page-header"> <i class="fa fa-archive"> Retención #'+msg.id+'</i> <small class="pull-right">Fecha: '+msg.fecha+'</small> </h2> </div> </div> <div class="row invoice-info"> <div class="col-sm-6 invoice-col"> <address> <b> % por fact. de Colegio: </b> '+parseFloat(msg.factura_colegio).toFixed(2)+' <br> <b>% por fact. de Federación:</b> '+parseFloat(msg.factura_federacion).toFixed(2)+' <br> <br></address> </div> <div class="col-sm-6 invoice-col"> <address>  <b>Cuota de Socios Federación: </b> $ '+parseFloat(msg.federacion_cuota).toFixed(2)+'<br> <b>Cuota de Socios Colegio: </b> $ '+parseFloat(msg.colegio_cuota).toFixed(2)+'<br> </address> </div> </div> </section>');
             $('#modal_ver_cliente').modal('toggle'); 
 
           })
@@ -394,7 +413,7 @@
 
 	      var filap="<option value=''>Seleccione Profesional</option>";
 	      var filao="<option value=''>Seleccione Obras Sociales</option>";
-	      var filal="<option value=''>Seleccione Descuento/Retención</option>";
+	      var filal="<option value=''>Seleccione Retención</option>";
 
 
 	      msg.profesionales.forEach(function(item) {
@@ -424,7 +443,7 @@
 		      $("#idliquidacion").val("{{$pago->idliquidacion}}").trigger('change'); 
 
 		        
-		      var images = "{{$pago->obras}}"; 
+		     /* var images = "{{$pago->obras}}"; 
 		      var images1 = images.split(",");
 		      var ii=[];
 
@@ -432,7 +451,7 @@
 		      	  ii.push(images1[i])
 		      };
 
-		      $("#obras").val(ii);
+		      $("#obras").val(ii);*/
 
 
 
@@ -443,14 +462,43 @@
 
 	}
 
+	function CargarRetencion(){
 
-	function selectArticleID(id){
+		var tt = $('#idliquidacion').val();
+
+
+	    $.ajax({
+	        url: "{{ route('getCarga') }}",
+	        type: 'GET',
+	        dataType: 'json',
+	    }).done(function(msg) {
+
+	
+	      var filal="<option value=''>Seleccione Retención</option>";
+
+	      msg.liquidaciones.forEach(function(item) {
+	         filal+="<option value="+item.id+">"+item.id+" </option>";
+	      });
+
+	
+	      $("#idliquidacion").html(filal);
+          $("#idliquidacion").val(tt); 
+
+
+	    }).fail(function(msg) {});
+
+	}
+
+
+
+	function selectArticleID(id,retencion){
       $.ajax({
         url: "{{ route('getObra') }}",
         type: 'GET',
         dataType: 'json',
         data: {
-          "id": id
+          "id": id,
+          "retencion" : retencion,
         }
       })
       .done(function(msg) {
@@ -468,15 +516,18 @@
               $('#table-articulos tbody').append('<tr>'+
                   
                   '<td style="width: 90px;">'+ item.nombre +'</td>'+
-                  '<td> <input type="number" class="form-control" style="width: 70px;" min="1" id="cantidad'+ i+'" name="cantidad'+ i+'" value="1" onchange="sumar('+ item.id +',this.value,'+ i+');"  > </td>'+
-                  '<td> <input type="text" class="form-control" style="width: 70px;" id="precio'+i+'" name="precio'+ i+'" value="'+ item.importe+'" onchange="precio('+i+','+ item.id +');" ></td>'+
+                  '<td> <input type="text" class="form-control" style="width: 70px;" min="1" id="cantidad'+ i+'" name="cantidad'+ i+'" value="1" onchange="sumar('+ item.id +',this.value,'+ i+');"  > </td>'+
+                  '<td> <input type="text" class="form-control" style="width: 70px;" id="precio'+i+'" name="precio'+ i+'" value="'+ item.retencion.factura_federacion+'" onchange="precio('+i+','+ item.id +');" ></td>'+
                   '<td> <span id="spTotal'+ i+'"></span></td>'+
                   '<td align="center"><button class="btn btn-danger btn-xs" onclick="eliminarArticulo(this,'+ item.id +');"><i class="fa fa-times" aria-hidden="true"></i></button></td>'+
                   '</tr>'); 
 
-              $('#cantidad'+i).trigger('change'); 
+                  $('#cantidad'+i).trigger('change'); 
+                  i++;
 
-              i++;
+
+          	    porcentaje=item.retencion.factura_colegio; 
+                document.getElementById('porcentaje').innerHTML = parseFloat(porcentaje).toFixed(0);
 
 
                 globalItems.push(item);
@@ -593,32 +644,56 @@
 	    var total = document.getElementById('total_general').innerHTML;
 	    $("#total_general_g").val(total);
 
+	   // porcentaje = parseFloat(porcentaje);
+	    var porce = parseFloat(porcentaje)/100;
+	   // porce = parseFloat(porcentaje);
+
+
+	    //console.log(porcentaje);
+
+
+
 
 	    if (descuento!="") {
 
-	     // var total = document.getElementById('total_general').innerHTML;
 	      var total = $("#total_general_t").val();
+
+
+
+
+
 	      total1 = (parseFloat(total).toFixed(2) - parseFloat(descuento).toFixed(2));
 	      document.getElementById('total_general').innerHTML = parseFloat(total1).toFixed(2);
-	      document.getElementById('sub_total').innerHTML = parseFloat(parseFloat(total) / parseFloat(1.19)).toFixed(2);
+	      //document.getElementById('sub_total').innerHTML = parseFloat(parseFloat(total) / parseFloat(1.19)).toFixed(2);
+	      document.getElementById('ivaa').innerHTML = parseFloat(parseFloat(total1) * parseFloat(porce)).toFixed(2);
 	      
 
-	      var sub_total     = parseFloat(parseFloat(total) / parseFloat(1.19)).toFixed(2);
+	     // var sub_total     = parseFloat(parseFloat(total) / parseFloat(1.19)).toFixed(2);
+	      var iva     = parseFloat(parseFloat(total1) * parseFloat(porce)    ).toFixed(2);
 	      var total_general = parseFloat(total).toFixed(2);
 
-	      document.getElementById('ivaa').innerHTML = parseFloat(parseFloat(total_general) - parseFloat(sub_total)).toFixed(2);
+	      document.getElementById('sub_total').innerHTML = parseFloat(parseFloat(total_general) - parseFloat(iva)).toFixed(2);
+			
+	    
+
 
 	    }else{
 
 	      var total = document.getElementById('total_general').innerHTML;
-	      document.getElementById('sub_total').innerHTML = parseFloat(parseFloat(total) / parseFloat(1.19)).toFixed(2);
+	     //document.getElementById('sub_total').innerHTML = parseFloat(parseFloat(total) / parseFloat(1.19)).toFixed(2);
 	      document.getElementById('total_general').innerHTML = $("#total_general_t").val();
-	      document.getElementById('sub_total').innerHTML = parseFloat(parseFloat($("#total_general_t").val()) / parseFloat(1.19)).toFixed(2);
+	     // document.getElementById('sub_total').innerHTML = parseFloat(parseFloat($("#total_general_t").val()) / parseFloat(1.19)).toFixed(2);
+	     // document.getElementById('sub_total').innerHTML = parseFloat(parseFloat($("#total_general_t").val()) / parseFloat(0.08)     ).toFixed(2);
+	      document.getElementById('ivaa').innerHTML = parseFloat(parseFloat(total) * parseFloat(porce)  ).toFixed(2);
 
-	      var sub_total     = parseFloat(parseFloat($("#total_general_t").val()) / parseFloat(1.19)).toFixed(2);
+	      //var sub_total     = parseFloat(parseFloat($("#total_general_t").val()) / parseFloat(1.19)).toFixed(2);
+	      var iva     = parseFloat(parseFloat($("#total_general_t").val()) * parseFloat(porce)   ).toFixed(2);
 	      var total_general = $("#total_general_t").val();
 
-	      document.getElementById('ivaa').innerHTML = parseFloat(parseFloat(total_general) - parseFloat(sub_total)).toFixed(2);
+	      document.getElementById('sub_total').innerHTML = parseFloat(parseFloat(total_general) - parseFloat(iva)).toFixed(2);
+		
+
+            
 
 	    }
     }
@@ -640,9 +715,6 @@
 	   ivaa = parseFloat(ivaa);
 	   total_general = parseFloat(total_general);
 	   descuento = parseFloat(descuento);
-
-
-
 
 
 
@@ -675,7 +747,7 @@
 
 
 	      	$.ajax({
-	          url: "{{ route('pagos.store') }}",                                          
+	          url: "{{ route('liquidaciones.store') }}",                                          
 	          type: "POST",                 
 	          dataType: 'json',
 	          contentType: 'application/json',
@@ -698,14 +770,8 @@
 	        })
 	        .done(function(msg) {
 
-	        	
-
 	            var message = 'La liquidación Fue creada correctamente';
-	            window.location.href = "{{ route('pagos.index') }}";
-
-
-	    
-	        
+	            window.location.href = "{{ route('liquidaciones.index') }}";
 
 
 	        })
@@ -714,14 +780,41 @@
 	        });
 
 
-	            
-
-	       
-
 	      };
 
 	      
 	  };
+
+    }
+
+
+    function cambio(){
+
+    	    globalItems = [];
+
+			articulos = [];
+			totales = [];
+			arti_creados = [];
+			i = 1;
+			sub_total = [];
+			suma = 0.00;
+			sub_totall;
+
+			numero = 0;
+			porcentaje = 0;
+
+            $('#table-articulos tbody tr').remove(); 
+            $("#mensaje").show();
+
+            subTotal();
+
+            $("#obras").val('').trigger('change'); 
+
+            document.getElementById('porcentaje').innerHTML = parseFloat(porcentaje).toFixed(0);
+
+    
+
+
 
     }
 

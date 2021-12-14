@@ -18,14 +18,11 @@ class CreateLiquidacionesTable extends Migration
             $table->string('fecha')->nullable();
             $table->float('federacion_cuota', 24, 2)->nullable();
             $table->float('colegio_cuota', 24, 2)->nullable();
-            $table->float('colegio_alicuota', 24, 2)->nullable();
-            $table->float('liquida_imp_gana', 24, 2)->nullable();
-            $table->boolean('liquida_imp')->nullable(); 
+            $table->float('factura_federacion', 24, 2)->nullable();
+            $table->float('factura_colegio', 24, 2)->nullable();
 
-            $table->float('compra_materiales', 24, 2)->nullable();
-            $table->float('seguro_adicional', 24, 2)->nullable();
-            $table->float('gastos_admin', 24, 2)->nullable();
-            $table->float('aporte_caja', 24, 2)->nullable();
+
+
           
             $table->timestamps();
             

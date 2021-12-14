@@ -72,7 +72,6 @@ class ObraController extends Controller
 
             $Obra = Obra::firstOrCreate([
              'nombre'          => $request->nombre,
-             'importe'          => $request->importe,
              'active'          => 1,
 
             ]);
@@ -123,7 +122,6 @@ class ObraController extends Controller
 
         $obra->fill([
             'nombre'          => $request->nombre,
-            'importe'          => $request->importe,
 		    'active'          => $request->active,
 		]);
 

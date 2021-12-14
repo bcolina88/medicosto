@@ -50,8 +50,8 @@ class LiquidacionController extends Controller
         $liquidaciones =Liquidacion::orWhere('liquidaciones.fecha','LIKE','%'.$search.'%')
         			  ->orWhere('liquidaciones.federacion_cuota','LIKE','%'.$search.'%')
         			  ->orWhere('liquidaciones.colegio_cuota','LIKE','%'.$search.'%')
-        			  ->orWhere('liquidaciones.colegio_alicuota','LIKE','%'.$search.'%')
-        			  ->orWhere('liquidaciones.liquida_imp','LIKE','%'.$liquida_imp.'%')
+        			  ->orWhere('liquidaciones.factura_federacion','LIKE','%'.$search.'%')
+        			  ->orWhere('liquidaciones.factura_colegio','LIKE','%'.$liquida_imp.'%')
                       ->orderBy('liquidaciones.id','DESC')
                       ->select('liquidaciones.*')
                       ->paginate(25);
@@ -101,31 +101,21 @@ class LiquidacionController extends Controller
         $date = $date->format('d-m-Y');
 
 
-        if ($request->liquida_imp == 'true') {
+       /* if ($request->liquida_imp == 'true') {
         	$liquida_imp = 1;
         }else{
         	$liquida_imp = 0;
 
-        }
+        }*/
 
 
             $Liquidacion = Liquidacion::firstOrCreate([
 
-             'fecha'          => $date,
-             'federacion_cuota'          => $request->federacion_cuota,
+             'fecha'                  => $date,
+             'federacion_cuota'       => $request->federacion_cuota,
              'colegio_cuota'          => $request->colegio_cuota,
-             'colegio_alicuota'          => $request->colegio_alicuota,
-             'liquida_imp'          => $liquida_imp,
-
-             'liquida_imp_gana'     => $request->liquida_imp_gana, 
-             'compra_materiales'     => $request->compra_materiales, 
-             'seguro_adicional'     => $request->seguro_adicional, 
-             'gastos_admin'     => $request->gastos_admin, 
-             'aporte_caja'     => $request->aporte_caja,
-  
-
-
-
+             'factura_colegio'        => $request->factura_colegio,
+             'factura_federacion'     => $request->factura_federacion,
 
             ]);
 
@@ -133,8 +123,8 @@ class LiquidacionController extends Controller
 
             $Liquidacion->save();
 
-            session::flash('message','La liquidación fue creada correctamente');
-            return redirect(route('liquidaciones.index')); 
+            session::flash('message','La Retención fue creada correctamente');
+            return redirect(route('retenciones.index')); 
 
     }
 
@@ -183,12 +173,12 @@ class LiquidacionController extends Controller
     {
 
 
-         if ($request->liquida_imp == 'true') {
+        /*if ($request->liquida_imp == 'true') {
         	$liquida_imp = 1;
         }else{
         	$liquida_imp = 0;
 
-        }
+        }*/
 
 
     	$Liquidacion = Liquidacion::find($id);
@@ -196,24 +186,18 @@ class LiquidacionController extends Controller
 
         $Liquidacion->fill([
        
-             'federacion_cuota'          => $request->federacion_cuota,
+             'federacion_cuota'       => $request->federacion_cuota,
              'colegio_cuota'          => $request->colegio_cuota,
-             'colegio_alicuota'          => $request->colegio_alicuota,
-             'liquida_imp'          => $liquida_imp,
-             
-             'liquida_imp_gana'     => $request->liquida_imp_gana, 
-             'compra_materiales'     => $request->compra_materiales, 
-             'seguro_adicional'     => $request->seguro_adicional, 
-             'gastos_admin'     => $request->gastos_admin, 
-             'aporte_caja'     => $request->aporte_caja,
+             'factura_colegio'        => $request->factura_colegio,
+             'factura_federacion'     => $request->factura_federacion,
   
 
         ]);
 
         $Liquidacion->save();
 
-        session::flash('message','La liquidación fue actualizada correctamente');
-        return redirect(route('liquidaciones.index')); 
+        session::flash('message','La Retención fue actualizada correctamente');
+        return redirect(route('retenciones.index')); 
 
    }
 
@@ -226,8 +210,8 @@ class LiquidacionController extends Controller
     public function destroy($id)
     {
     	Liquidacion::destroy($id);
-        session::flash('message','La liquidacion fue eliminada correctamente');
-        return redirect(route('liquidaciones.index')); 
+        session::flash('message','La Retención fue eliminada correctamente');
+        return redirect(route('retenciones.index')); 
     }
 
 

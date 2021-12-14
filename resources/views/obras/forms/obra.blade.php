@@ -39,18 +39,7 @@
 
 	                    </div>
 	                </div>
-	                <div class="row">
-	                    <div class="col-lg-6" style="margin: 0px;">
-	                      <label>% de cobro de factura </label>
-	                      <input type="hidden" name="id" id="id">
-	                     
-                          {!! Form::text('importe', null, ['class' => 'form-control', 'placeholder' => '0', 'required']) !!}
-
-
-
-	                    </div>
-	                </div>
-
+	        
 
 	                 @if ($obra)
 	                <div class="row">

@@ -16,7 +16,7 @@ Listado de Liquidaciones
 @if (Session::has('message'))
  <p class="alert alert-info"><b>{{ Session::get('message')}}</b></p>
 @endif
-  {!!Form::open(['route'=>'pagos.index', 'method'=>'GET'])!!}
+  {!!Form::open(['route'=>'liquidaciones.index', 'method'=>'GET'])!!}
 <div class="input-group">
 
                       <input type="text" name="search" class="form-control input-sm pull-right" style="width: 150px;" placeholder="Buscar..."/>
@@ -52,13 +52,13 @@ Listado de Liquidaciones
             
                      <td>
                       <div class="btn-group">
-                      {!! Form::model($medi, ['route'=>['pagos.update', $medi->id], 'method'=>'DELETE']) !!}
+                      {!! Form::model($medi, ['route'=>['liquidaciones.update', $medi->id], 'method'=>'DELETE']) !!}
 
                           
                       	  <a href="{{route("reciboPago", ['id' => $medi->id])}}" class='btn btn-info fa fa-file-pdf-o'><b></b></a> 
 
                           @if (\App\Http\Controllers\RolesController::editar(9))
-			               <a href="{{route("pagos.edit", ['id' => $medi->id])}}" onclick="return confirm('Seguro que Desea editar Liquidación #{{$medi->id}}')" class="btn btn-default btn-warning fa fa-pencil "><b></b></a> 
+			               <a href="{{route("liquidaciones.edit", ['id' => $medi->id])}}" onclick="return confirm('Seguro que Desea editar Liquidación #{{$medi->id}}')" class="btn btn-default btn-warning fa fa-pencil "><b></b></a> 
 			              @endif
 
 
@@ -93,7 +93,7 @@ Listado de Liquidaciones
             <div class="box-footer clearfix">
 
                 @if (\App\Http\Controllers\RolesController::agregar(9))
-                    <a href="{{route('pagos.create')}}" class="btn btn-default btn-warning btn-flat pull-left"><b>Nuevo Liquidación</b></a> 
+                    <a href="{{route('liquidaciones.create')}}" class="btn btn-default btn-warning btn-flat pull-left"><b>Nuevo Liquidación</b></a> 
 			    @endif
               
 

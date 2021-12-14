@@ -12,7 +12,7 @@ class Liquidacion extends Model
 
 
     protected $fillable = [
-        'fecha','federacion_cuota','colegio_cuota','colegio_alicuota','liquida_imp','created_at','updated_at', 'liquida_imp_gana', 'compra_materiales', 'seguro_adicional', 'gastos_admin', 'aporte_caja',
+        'fecha','federacion_cuota','colegio_cuota','created_at','updated_at', 'factura_federacion', 'factura_colegio',
     ];
 
    

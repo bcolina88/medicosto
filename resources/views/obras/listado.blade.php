@@ -34,7 +34,6 @@ Listado de Obras Sociales
                   <tr>
                     <th>Nro</th>
                     <th>Nombre</th>
-                    <th>% de cobro de factura</th>
                     <th>Estado</th>
 
               
@@ -47,7 +46,6 @@ Listado de Obras Sociales
 
                     <td>{{$medi->id}}</td>
                     <td>{{$medi->nombre}}</td>
-                    <td>{{$medi->importe}}</td>
                     
                     <td>
 

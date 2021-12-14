@@ -43,7 +43,6 @@ $factory->define(App\Model\Profesional::class, function (Faker $faker) {
 $factory->define(App\Model\Obra::class, function (Faker $faker) {
     return [
         'nombre' => $faker->name,
-        'importe' =>  $faker->randomFloat($nbMaxDecimals = 0, $min = 0, $max = 10),
     	'active'=> true,
     ];
 });

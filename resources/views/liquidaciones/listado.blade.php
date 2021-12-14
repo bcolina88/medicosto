@@ -1,6 +1,6 @@
 @extends('layout.template')
 @section('title')
-Listado de Descuento/Retenc
+Listado de Retenciones
 @endsection
 @section('content')
 
@@ -12,11 +12,11 @@ Listado de Descuento/Retenc
           <div class="box box-info">
             <div class="box-header with-border">
 
-              <h3 class="box-title">Listado de Descuento/Retención </h3>
+              <h3 class="box-title">Listado de Retenciones </h3>
 @if (Session::has('message'))
  <p class="alert alert-info"><b>{{ Session::get('message')}}</b></p>
 @endif
-  {!!Form::open(['route'=>'liquidaciones.index', 'method'=>'GET'])!!}
+  {!!Form::open(['route'=>'retenciones.index', 'method'=>'GET'])!!}
 <div class="input-group">
 
                       <input type="text" name="search" class="form-control input-sm pull-right" style="width: 150px;" placeholder="Buscar..."/>
@@ -34,10 +34,10 @@ Listado de Descuento/Retenc
                   <tr>
                     <th>Nro</th>
                     <th>Fecha</th>
-                    <th>Cuota de Federación</th>
-                    <th>Cuota de Colegio</th>
-                    <th>Alícuota de Colegio</th>
-                    <th>Liquida Imp. Ganancias</th>
+                    <th>Cuota de Socios Federación</th>
+                    <th>Cuota de Socios Colegio</th>
+                    <th>% por fact. de Colegio</th>
+                    <th>% por fact. de Federación</th>
               
                     <th>Acciones</th>
                   </tr>
@@ -50,36 +50,28 @@ Listado de Descuento/Retenc
                     <td>{{$medi->fecha}}</td>
                     <td>{{$medi->federacion_cuota}}</td>
                     <td>{{$medi->colegio_cuota}}</td>
-                    <td>{{$medi->colegio_alicuota}}</td>
-                    <td>
 
 
-                        @if($medi->liquida_imp ==1)
-                          <p class="text-green">Corresponde</p>
-                        @else
-                          <p class="text-red">No Corresponde</p>
-                        @endif
-
-
-                    </td>
-               
+                    <td>{{$medi->factura_colegio}}</td>
+                    <td>{{$medi->factura_federacion}}</td>
+              
             
             
                      <td>
                       <div class="btn-group">
-                    {!! Form::model($medi, ['route'=>['liquidaciones.update', $medi->id], 'method'=>'DELETE']) !!}
+                    {!! Form::model($medi, ['route'=>['retenciones.update', $medi->id], 'method'=>'DELETE']) !!}
 
             
 		            
                     @if (\App\Http\Controllers\RolesController::editar(8))
-		             <a href="{{route("liquidaciones.edit", ['id' => $medi->id])}}" onclick="return confirm('Seguro que Desea Editar Descuento/Retención #{{$medi->id}}')" class="btn btn-default btn-warning fa fa-pencil"><b></b></a> 
+		             <a href="{{route("retenciones.edit", ['id' => $medi->id])}}" onclick="return confirm('Seguro que Desea Editar Retención #{{$medi->id}}')" class="btn btn-default btn-warning fa fa-pencil"><b></b></a> 
                     @endif
                     
 		             
 
 		             @if (Auth::user()->idrole == 1)
                        @if (\App\Http\Controllers\RolesController::borrar(8))
-		               <button type='submit' class="btn btn-default btn-danger fa fa-trash" onclick="return confirm('Seguro que Desea eliminar Descuento/Retención #{{$medi->id}}')" ></i></button> 
+		               <button type='submit' class="btn btn-default btn-danger fa fa-trash" onclick="return confirm('Seguro que Desea eliminar Retención #{{$medi->id}}')" ></i></button> 
                        @endif
                      @endif
 		            
@@ -108,7 +100,7 @@ Listado de Descuento/Retenc
             <div class="box-footer clearfix">
 
               @if (\App\Http\Controllers\RolesController::agregar(8))
-              <a href="{{route('liquidaciones.create')}}" class="btn btn-default btn-warning btn-flat pull-left"><b>Nueva Descuento/Retención</b></a> 
+              <a href="{{route('retenciones.create')}}" class="btn btn-default btn-warning btn-flat pull-left"><b>Nueva Retención</b></a> 
               @endif
               
               <ul class="pagination pagination-sm no-margin pull-right">
