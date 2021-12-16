@@ -46,7 +46,12 @@
                      
                       <label for="exampleInputPassword1">Federación</label>  <span style="color: #E6674A;">*</span>
                  
-                     {!! Form::text('factura_federacion', null, ['class' => 'form-control', 'placeholder' => '0.00', 'required']) !!}
+                   
+                     <input type="text" class="form-control campoTel"  placeholder="0.00" name="factura_federacion" id="factura_federacion" required>
+
+
+
+
                     </div>
 
 
@@ -55,7 +60,12 @@
                      
                       <label for="exampleInputPassword1">Colegio</label>  <span style="color: #E6674A;">*</span>
                  
-                     {!! Form::text('factura_colegio', null, ['class' => 'form-control', 'placeholder' => '0.00', 'required']) !!}
+
+
+                        <input type="text" class="form-control campoTel"  placeholder="0.00" name="factura_colegio" id="factura_colegio" required>
+
+
+
                     </div>
 
 
@@ -72,15 +82,20 @@
                       <br>
                       <label for="exampleInputPassword1">Federación</label>  <span style="color: #E6674A;">*</span>
                   
-                       {!! Form::text('federacion_cuota', null, ['class' => 'form-control', 'placeholder' => '0.00', 'required']) !!}
-	                   
+                     
+                        <input type="text" class="form-control campoTel"  placeholder="0.00" name="federacion_cuota" id="federacion_cuota" required>
+
+                    
+
                     </div>
 
                     <div class="col-md-4"> 
                       <br>
                       <label for="exampleInputPassword1">Colegio</label>  <span style="color: #E6674A;">*</span>
                       <div class="form-group">
-                        {!! Form::text('colegio_cuota', null, ['class' => 'form-control', 'placeholder' => '0.00', 'required' ]) !!}
+                       
+                        <input type="text" class="form-control campoTel"  placeholder="0.00" name="colegio_cuota" id="colegio_cuota" required>
+
                       </div>     
                     </div> 
 
@@ -126,6 +141,21 @@
 
 @section('javascript')
 <script>
+$(function () {
+
+    $('.campoTel').keypress(function (tecla) {
+	    if ((tecla.charCode > 57)){
+	        // Do something
+	       return false;
+
+
+	    }
+	});
+
+
+});
+
+
 
     $('[name="liquida_imp"]').click(function(){
 
@@ -151,6 +181,13 @@
 
 
   @if ($liquidacion)
+
+
+        $("#colegio_cuota").val("{{$liquidacion->colegio_cuota}}").trigger('change');
+        $("#federacion_cuota").val("{{$liquidacion->federacion_cuota}}").trigger('change');
+        $("#factura_colegio").val("{{$liquidacion->factura_colegio}}").trigger('change');
+        $("#factura_federacion").val("{{$liquidacion->factura_federacion}}").trigger('change');
+
 
 
         $("#datepicker_fecha").val("{{$liquidacion->fecha}}").trigger('change');

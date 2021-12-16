@@ -60,7 +60,10 @@
 	                      <br>
 	                      <label for="exampleInputPassword1">Importe</label> <span style="color: #E6674A;">*</span>
 	                 
-	                     {!! Form::text('importe', null, ['class' => 'form-control', 'placeholder' => 'Importe', 'required']) !!}
+			            <input type="text" class="form-control campoTel" name="importe" id="importe" required placeholder='0.00'>
+
+
+
 	                    </div>
                     </div>
 
@@ -82,6 +85,8 @@
                        <!--  <label for="exampleInputPassword1">Obras Sociales</label> <span style="color: #E6674A;">*</span>
                        <select class="form-control select2" multiple="multiple" id="obras" name="obras[]" style="width: 100%;" required> </select>
 -->
+						<a class="btn btn-default btn-primary" id='btn-agregar-descuento' style="color: #fff;"> Agregar Descuentos</a>
+
                     </div>
                     </div>
 
@@ -102,7 +107,7 @@
                 <tbody >
                   <tr style="background-color: transparent;">
           
-                    </td>
+                    
                   </tr>
                 </tbody>
 
@@ -123,6 +128,7 @@
                             <br><br>      
                         </div>
                       </div>
+          </td>
         </div>
         <!-- /.col -->
       </div>
@@ -151,7 +157,7 @@
               </tr>
                <tr>
                 <th>Descuento:</th>
-                <td><input type="number" class="form-control" id="descuento" name="descuento" onchange="totalGeneral();" placeholder="0.00" value="0" style="width: 100px;" ></td> </tr>
+                <td><input type="text" class="form-control" id="descuento" name="descuento" value="0.00" onchange="totalGeneral();" placeholder="0.00" style="width: 100px;" ></td> </tr>
               <tr>
                 <th>Total:</th>
                 <td>$ <b><span id="total_general">0.00</span></b></td>
@@ -218,24 +224,137 @@
   </div>
 
 
+   <div class="modal fade" tabindex="-1" role="dialog" id="modal_agregar-descuento" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header" id="titulo-orden">
+           <h4 class="modal-title">Agregar descuento</h4>
+
+        </div>
+        <div class="modal-body" >
+
+            <div class="box-body">
+		            <div class="col-md-6">
+			            <div class="form-group">
+			                      {!! Form::label('nombre', 'Nombre') !!}
+			                      <div class="input-group">
+							            <div class="input-group-addon">
+				                    <i class="fa fa-money"></i>
+				                  </div>
+			                         <input type="text" class="form-control" name="nombre_descuento" id="nombre_descuento" required placeholder='Nombre'>
+
+			                    </div>
+			            </div>
+		            </div>
+
+		            <div class="col-md-6">
+			            <div class="form-group">
+			                      {!! Form::label('valor', 'Valor') !!}
+			                      <div class="input-group">
+					                <div class="input-group-addon">
+		                             <i class="fa fa-money"></i>
+                      			   </div>
+			                        <input type="text" class="form-control campoTel" name="importe_descuento" id="importe_descuento" required placeholder='0.00'>
+
+			                    </div>
+			            </div>
+		            <button type="button" class="btn btn-primary" style="font-size: 14px;color: #fff;" id="agrega_descuento">Enviar</button>
+			              <br><br>
+		            </div>
+
+
+
+
+
+		    	    <!-- Table row -->
+				    <div class="row">
+				        <div class="col-xs-12 table-responsive">
+				          <table class="table table-bordered table-hover table-responsive" id="table-descuentos">
+				                <thead>
+				                <tr>
+				                  <th style="width: 90px;">Nombre</th>
+				                  <th style="width: 50px;">Valor</th>
+
+				                  <th style="width: 50px;">Acciones</th>
+				                </tr>
+				                </thead>
+				                <tbody >
+				                  <tr style="background-color: transparent;">
+				          
+				                   
+				                  </tr>
+				                </tbody>
+
+				          </table>
+				          <td colspan="7">
+				                      <p id="mensaje_d" name="mensaje_d" class="alert alert-info text-center " >No hay descuentos.</p>
+				                      <br>
+				          </td>
+				                     
+				        </div>
+				        <!-- /.col -->
+				    </div>
+				    <!-- /.row -->
+           <h4 class="modal-title">Total descuento: $ <b><span id="total_descuento"></span></b></h4>
+
+
+
+        </div>
+        </div>
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-light-grey" data-dismiss="modal" style="font-size: 14px;" id="salir_descuento">Salir</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 
 <script src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
 
 @section('javascript')
 <script>
 
+
+$(function () {
+
+    $('.campoTel').keypress(function (tecla) {
+	    if ((tecla.charCode > 57)){
+	        // Do something
+	       return false;
+
+
+	    }
+	});
+
+
+});
+
+
+
+
+
 	var globalItems = [];
+	var globalDescuento = [];
 	var articulos = [];
 	var totales = [];
 	var arti_creados = [];
+	var descuento_creados = [];
 	var i = 1;
 	var sub_total = [];
 	var suma = 0.00;
+	var sumaD = 0.00;
 	var sub_totall;
+
+	var kk=1;
 
 	var numero = 0;
 	var porcentaje = 0;
 
+
+    document.getElementById('total_descuento').innerHTML = parseFloat(sumaD).toFixed(2);
 
 
     CargarSelects();
@@ -254,9 +373,10 @@
 
 
     document.getElementById('sub_total').innerHTML = parseFloat('{{$pago->subtotal}}').toFixed(2);
-    document.getElementById('ivaa').innerHTML = parseFloat('{{$pago->iva}}').toFixed(2);
+   // document.getElementById('ivaa').innerHTML = '{{$pago->iva}}';
     document.getElementById('total_general').innerHTML = parseFloat('{{$pago->total}}').toFixed(2);
     $("#descuento").val({{$pago->descuento}}).trigger('change');
+   // $("#ivaa").val({{$pago->iva}}).trigger('change');
  
 
     $('[name="importe"]').val({{$pago->importe}}).trigger('change');
@@ -274,7 +394,9 @@
 
         var ii=0;
 
-        msg.forEach(function(item) {
+
+
+        msg.obras.forEach(function(item) {
 
           var iva = item.iva;
           sub_totall = item.sub_total;
@@ -289,7 +411,7 @@
                     
                   '<td style="width: 90px;">'+ item.nombre +'</td>'+
                   '<td> <input type="text" class="form-control" style="width: 70px;" min="1" id="cantidad'+ i+'" name="cantidad'+ i+'" value="1" onchange="sumar('+ item.id +',this.value,'+ i+');"  > </td>'+
-                  '<td> <input type="text" class="form-control" style="width: 70px;" id="precio'+i+'" name="precio'+ i+'" value="'+ item.importe+'" onchange="precio('+i+','+ item.id +');" ></td>'+
+                  '<td> <input type="text" class="form-control" style="width: 70px;" id="precio'+i+'" name="precio'+ i+'" value="'+ item.precio+'" onchange="precio('+i+','+ item.id +');" ></td>'+
                   '<td> <span id="spTotal'+ i+'"></span></td>'+
                   '<td align="center"><button class="btn btn-danger btn-xs" onclick="eliminarArticulo(this,'+ item.id +');"><i class="fa fa-times" aria-hidden="true"></i></button></td>'+
                   '</tr>'); 
@@ -297,21 +419,65 @@
                 
                  $("#cantidad"+i).val(item.cantidad).trigger('change');
                 //$("#precio"+i).val(item.precio).trigger('change');
-          
-                 
-                 document.getElementById('spTotal'+i).innerHTML = parseFloat(item.total).toFixed(2);
-                
-                i++;
 
-                globalItems.push(item);
-                articulos.push(item.id);
+                 // porcentaje=parseFloat(item.iva).toFixed(2);
+                  //item.iva; 
+
+                  console.log({{$pago->iva}});
+                 //$("#porcentaje").val(1).trigger('change');
+
+                  document.getElementById('porcentaje').innerHTML = item.retencion.factura_colegio;
+                  document.getElementById('spTotal'+i).innerHTML = parseFloat(item.total).toFixed(2);
+
+
+                
+                  i++;
+
+                  globalItems.push(item);
+                  articulos.push(item.id);
 
             }
 
-                 $("#importe"+i).val(item.cantidad).trigger('change');
+            $("#importe"+i).val(item.cantidad).trigger('change');
+                  document.getElementById('ivaa').innerHTML = {{$pago->iva}};
 
 
         });
+
+
+        
+        msg.descuentos.forEach(function(item) {
+
+	       
+	       	 var atem ={};
+             atem.nombre = item.nombre;
+             atem.importe = parseFloat(item.valor).toFixed(2);
+
+
+	          $("#mensaje_d").hide();
+
+              $('#table-descuentos tbody').append('<tr>'+
+                  
+                  '<td style="width: 90px;">'+ item.nombre +'</td>'+
+                  '<td style="width: 90px;">'+ item.valor +'</td>'+
+            
+                  '<td align="center"><button class="btn btn-danger btn-xs" onclick="eliminarDescuento(this,'+ kk +');"><i class="fa fa-times" aria-hidden="true"></i></button></td>'+
+                  '</tr>'); 
+
+
+
+                globalDescuento.push(atem);
+                descuento_creados.push(kk);
+
+                sumarDescuento();
+
+                kk++;
+
+        });
+
+                  document.getElementById('ivaa').innerHTML = {{$pago->iva}};
+        
+
 
         
       })
@@ -327,7 +493,17 @@
 
 
 	//$('#idprofesional').click(function(){CargarSelects(); });
-	//$('#obras').click(function(){CargarSelects(); });
+	$('#agrega_descuento').click(function(){
+
+		var nombre_descuento = $('#nombre_descuento').val();
+		var importe_descuento = $('#importe_descuento').val();
+
+		$('#nombre_descuento').val('');
+		$('#importe_descuento').val('');
+
+		selectDescuento(nombre_descuento,importe_descuento);
+
+	});
 
 	
 
@@ -336,7 +512,9 @@
 		  if ($('#idliquidacion').val()==="") {
 
 
+              $('#obras').val('').trigger('change'); 
                alert("Debe seleccionar una Retención");
+
 
 
 	      }else{
@@ -354,9 +532,28 @@
 
         CargarRetencion();
 
+
     });
 
 
+
+
+
+    $('#btn-agregar-descuento').click(function(){
+
+
+    	//if ($('#idprofesional').val()==="") {
+
+        //   alert("Debe seleccionar un Profesional");
+
+	   // }else{
+
+	      $('#modal_agregar-descuento').modal('toggle'); 
+
+	    //}
+       
+
+    });
 
     $('#btn-ver-cliente').click(function(){
 
@@ -569,6 +766,28 @@
     }
 
 
+    function eliminarDescuento(element,id){
+
+
+	      var item = $(element).closest("tr").find('[name="td-hidden"]').text();
+	      
+	      var posicion = descuento_creados.indexOf(id);
+	      var removed1 = globalDescuento.splice(posicion, 1);
+	      var removed2 = descuento_creados.splice(posicion, 1);
+
+	      
+
+	      $(element).parent().parent().remove();
+	      if(globalDescuento.length == 0) {
+	        	$("#mensaje_d").show(); 
+	      }
+
+          sumarDescuento();
+
+
+    }
+
+
     function sumar (id,valor,i) {
 
         var total = 0; 
@@ -644,23 +863,12 @@
 	    var total = document.getElementById('total_general').innerHTML;
 	    $("#total_general_g").val(total);
 
-	   // porcentaje = parseFloat(porcentaje);
 	    var porce = parseFloat(porcentaje)/100;
-	   // porce = parseFloat(porcentaje);
-
-
-	    //console.log(porcentaje);
-
-
-
+	
 
 	    if (descuento!="") {
 
 	      var total = $("#total_general_t").val();
-
-
-
-
 
 	      total1 = (parseFloat(total).toFixed(2) - parseFloat(descuento).toFixed(2));
 	      document.getElementById('total_general').innerHTML = parseFloat(total1).toFixed(2);
@@ -762,6 +970,7 @@
 	            "subtotal":       sub_total,
 	            "total":          total_general,
 	            "obras" :         totales,
+	            "descuentos" :    globalDescuento,
                 "tipo":          "{{$tipo}}",
                 "id":             numero,
 
@@ -800,7 +1009,7 @@
 			suma = 0.00;
 			sub_totall;
 
-			numero = 0;
+			//numero = 0;
 			porcentaje = 0;
 
             $('#table-articulos tbody tr').remove(); 
@@ -818,6 +1027,65 @@
 
     }
 
+
+    function sumarDescuento () {
+
+      if(globalDescuento.length > 0){
+	    for( var j=0; j < globalDescuento.length;j++){
+	            sumaD = parseFloat(sumaD) + parseFloat(globalDescuento[j].importe);
+	    }
+	  }
+
+	  document.getElementById('total_descuento').innerHTML = parseFloat(sumaD).toFixed(2);
+	  //document.getElementById('descuento').innerHTML = parseFloat(sumaD).toFixed(2);
+	  //var total = document.getElementById('total_general').innerHTML;
+	  $("#descuento").val(parseFloat(sumaD).toFixed(2)); 
+	  sumaD= 0.00;
+
+	  subTotal();
+
+
+    
+    }
+
+
+
+
+
+    function selectDescuento(nombre,importe){
+
+
+
+    		 var item ={};
+             item.nombre = nombre;
+             item.importe = parseFloat(importe).toFixed(2);
+
+              
+              $("#mensaje_d").hide();
+
+              $('#table-descuentos tbody').append('<tr>'+
+                  
+                  '<td style="width: 90px;">'+ nombre +'</td>'+
+                  '<td style="width: 90px;">'+ importe +'</td>'+
+            
+                  '<td align="center"><button class="btn btn-danger btn-xs" onclick="eliminarDescuento(this,'+ kk +');"><i class="fa fa-times" aria-hidden="true"></i></button></td>'+
+                  '</tr>'); 
+
+
+
+                globalDescuento.push(item);
+                descuento_creados.push(kk);
+
+                sumarDescuento();
+
+                kk++;
+
+
+          
+    }
+
+
+    
 
 
 </script>

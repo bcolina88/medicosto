@@ -14,6 +14,7 @@ use App\Model\Profesional;
 use App\Model\Liquidacion;
 use App\Model\Pago;
 use App\Model\PagoItem;
+use App\Model\Descuento;
 
 
 
@@ -103,20 +104,26 @@ class ApiController extends Controller
     {
       $pago = Pago::where('id',$request->id)->first();
       $albaranesItems = PagoItem::where('idpago',$request->id)->get();
+      $descuentos = Descuento::where('idpago',$request->id)->get();
+      $liquidacion = Liquidacion::where('id',$pago->idliquidacion)->first();
       $articulos =[];
 
       foreach ($albaranesItems as $key => $items) {
 
           $article = Obra::where('id',$items['idobra'])->first();
 
-          $articulo = array('idarticulo' => $items['idobra'],'nombre' => $article->nombre,'importe' => $article->importe,'cantidad' => $items['total_fact_odont'],'id' => $article->id,
-            'total' => $items['total'],  'total_general' => $pago->total,'sub_total' => $pago->subtotal,'iva' => $pago->iva, 'precio' => $items['porcentaje_cobro']);  
+          $articulo = array('idarticulo' => $items['idobra'],'nombre' => $article->nombre,'importe' => $pago->porcentaje_cobro,'cantidad' => $items['total_fact_odont'],'id' => $article->id,
+            'total' => $items['total'],  'total_general' => $pago->total,'sub_total' => $pago->subtotal,'iva' => $pago->iva, 'precio' => $items['porcentaje_cobro'], 'retencion' =>$liquidacion);  
           
           array_push($articulos,$articulo);
+
+
          
       }
 
-      return json_encode($articulos);
+      //return json_encode($articulos);
+
+      return ['obras' => $articulos, 'descuentos'=>$descuentos];
 
     }
 

@@ -8,6 +8,7 @@ use App\Model\User;
 use App\Model\Obra;
 use App\Model\Pago;
 use App\Model\PagoItem;
+use App\Model\Descuento;
 
 
 use Barryvdh\DomPDF\Facade as PDF;
@@ -117,7 +118,8 @@ class PagoController extends Controller
         if ($request->tipo==="editar") {
 
 
-        	$albaranesItem = PagoItem::where('idobra',$request->id)->get();
+        	$albaranesItem = PagoItem::where('idpago',$request->id)->get();
+        	$descuentoItem = Descuento::where('idpago',$request->id)->get();
             $pago = Pago::find($request->id);
           
 	        $pago->fill([
@@ -140,6 +142,15 @@ class PagoController extends Controller
 	            PagoItem::destroy($item['id']);  
 	          
 	        }
+
+	        foreach ($descuentoItem as $key => $item) {
+
+	    
+	            Descuento::destroy($item['id']);  
+	          
+	        }
+
+	    /************************************************************************/
 
 
         }
@@ -169,9 +180,6 @@ class PagoController extends Controller
 
 
 
-		        
-
-
 		        $articulos = $request->obras;
 
 
@@ -191,6 +199,33 @@ class PagoController extends Controller
 			          ]);
 		          
 		        }
+
+
+
+		        $descuentos = $request->descuentos;
+
+
+		        foreach ($descuentos as $key => $item) {
+		           
+			          //$article = Obra::where('id',$item['id'])->first();
+
+
+			          $descuento = Descuento::firstOrCreate([
+			             'idpago'            => $pago->id,
+			             'idprofesional'     => $request->idprofesional,
+			             'nombre'            => $item['nombre'], 
+			             'valor'             => $item['importe'],
+			             'total_descuento'   => $request->descuento,
+			             'fecha'             => $date,
+			        
+			          ]);
+		          
+		        }
+
+
+
+
+
 
 		        return json_encode('creado');
 
