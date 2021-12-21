@@ -148,18 +148,18 @@
           <div class="table-responsive">
             <table class="table">
               <tr>
-                <th style="width:50%">Subtotal:</th>
+                <th style="width:50%">Total Pagos:</th>
                 <td>$ <span id="sub_total">0.00</span></td>
               </tr>
               <tr>
-                <th>% de cobro de factura por colegio (<span id="porcentaje">0</span>%):</th>
+                <th> Alícuota colegio (<span id="porcentaje">0</span>%):</th>
                 <td>$ <span id="ivaa">0.00</span></td>
               </tr>
                <tr>
                 <th>Descuento:</th>
                 <td><input type="text" class="form-control" id="descuento" name="descuento" value="0.00" onchange="totalGeneral();" placeholder="0.00" style="width: 100px;" ></td> </tr>
               <tr>
-                <th>Total:</th>
+                <th>Total Liquidación:</th>
                 <td>$ <b><span id="total_general">0.00</span></b></td>
                 <input type="text" class="form-control hide" id="total_general_g" name="total_general_g"  >
                 <input type="text" class="form-control hide" id="total_general_t" name="total_general_t"  >
@@ -349,6 +349,8 @@ $(function () {
 	var sub_totall;
 
 	var kk=1;
+	var cuotas = false;
+
 
 	var numero = 0;
 	var porcentaje = 0;
@@ -370,11 +372,13 @@ $(function () {
     @if ($pago)
 
     numero = {{$pago->id}};
+	cuotas = true;
+
 
 
     document.getElementById('sub_total').innerHTML = parseFloat('{{$pago->subtotal}}').toFixed(2);
    // document.getElementById('ivaa').innerHTML = '{{$pago->iva}}';
-    document.getElementById('total_general').innerHTML = parseFloat('{{$pago->total}}').toFixed(2);
+   //document.getElementById('total_general').innerHTML = 1;
     $("#descuento").val({{$pago->descuento}}).trigger('change');
    // $("#ivaa").val({{$pago->iva}}).trigger('change');
  
@@ -423,13 +427,15 @@ $(function () {
                  // porcentaje=parseFloat(item.iva).toFixed(2);
                   //item.iva; 
 
-                  console.log({{$pago->iva}});
+                  //console.log({{$pago->iva}});
                  //$("#porcentaje").val(1).trigger('change');
 
                   document.getElementById('porcentaje').innerHTML = item.retencion.factura_colegio;
-                  document.getElementById('spTotal'+i).innerHTML = parseFloat(item.total).toFixed(2);
+                  porcentaje = item.retencion.factura_colegio;
+                  //document.getElementById('spTotal'+i).innerHTML = parseFloat(item.total).toFixed(2);
 
 
+                  $("#importe"+i).val(item.cantidad).trigger('change');
                 
                   i++;
 
@@ -438,11 +444,15 @@ $(function () {
 
             }
 
-            $("#importe"+i).val(item.cantidad).trigger('change');
-                  document.getElementById('ivaa').innerHTML = {{$pago->iva}};
+            document.getElementById('ivaa').innerHTML = {{$pago->iva}};
 
 
         });
+
+		
+        document.getElementById('total_general').innerHTML = parseFloat('{{$pago->total}}').toFixed(2);
+       // porcentaje= parseFloat('{{$pago->iva}}').toFixed(2);
+   
 
 
         
@@ -542,15 +552,43 @@ $(function () {
     $('#btn-agregar-descuento').click(function(){
 
 
-    	//if ($('#idprofesional').val()==="") {
+    	if ($('#idliquidacion').val()==="") {
 
-        //   alert("Debe seleccionar un Profesional");
+           alert("Debe seleccionar un Retención");
 
-	   // }else{
+	    }else{
 
-	      $('#modal_agregar-descuento').modal('toggle'); 
 
-	    //}
+
+	    	$.ajax({
+	            url: "{{ route('getDescuento') }}",
+	            type: 'GET',
+	            dataType: 'json',
+	            data: {
+	              "id": $('[name="idliquidacion"]').val()
+	            }
+	        })
+	        .done(function(msg) {
+
+	        	@if (!$pago) {
+	        		selectDescuento("Cuota F.O.R.N.",msg.federacion_cuota);
+	        	    selectDescuento("Cuota Colegio",msg.colegio_cuota);
+	        	    cuotas=true;
+
+	        	@endif
+
+
+          
+	          $('#modal_agregar-descuento').modal('toggle'); 
+
+
+	        })
+	        .fail(function(msg) {
+	            console.log("error en getDescuento");
+	        });
+
+
+	    }
        
 
     });
@@ -847,9 +885,9 @@ $(function () {
 	    }
 	  }
 
-	  document.getElementById('total_general').innerHTML = parseFloat(suma).toFixed(2);
-	  var total = document.getElementById('total_general').innerHTML;
-	  $("#total_general_t").val(total);
+	  document.getElementById('sub_total').innerHTML = parseFloat(suma).toFixed(2);
+	  var total = document.getElementById('sub_total').innerHTML;
+	  $("#sub_total").val(total);
 	  suma= 0.00;
 
 	  totalGeneral();
@@ -860,46 +898,61 @@ $(function () {
     function totalGeneral(){
 
 	    var descuento = $("#descuento").val();
-	    var total = document.getElementById('total_general').innerHTML;
-	    $("#total_general_g").val(total);
+	    var total = $("#sub_total").val();
+	    //var total = document.getElementById('sub_total').innerHTML;
 
-	    var porce = parseFloat(porcentaje)/100;
+	      console.log(porcentaje);
+
+
+
+
+	 
+
+	    var porce = parseFloat(parseFloat(porcentaje)/100).toFixed(2);
 	
 
 	    if (descuento!="") {
 
-	      var total = $("#total_general_t").val();
+	      //var total = $("#total_general_t").val();
 
-	      total1 = (parseFloat(total).toFixed(2) - parseFloat(descuento).toFixed(2));
+	      total1 = parseFloat(total).toFixed(2) ;
+	
 	      document.getElementById('total_general').innerHTML = parseFloat(total1).toFixed(2);
-	      //document.getElementById('sub_total').innerHTML = parseFloat(parseFloat(total) / parseFloat(1.19)).toFixed(2);
 	      document.getElementById('ivaa').innerHTML = parseFloat(parseFloat(total1) * parseFloat(porce)).toFixed(2);
 	      
 
-	     // var sub_total     = parseFloat(parseFloat(total) / parseFloat(1.19)).toFixed(2);
-	      var iva     = parseFloat(parseFloat(total1) * parseFloat(porce)    ).toFixed(2);
+	      var iva = parseFloat(parseFloat(total1) * parseFloat(porce)).toFixed(2);
+
+
+	      var retencion = parseFloat(parseFloat(iva) + parseFloat(descuento)).toFixed(2);
+
 	      var total_general = parseFloat(total).toFixed(2);
 
-	      document.getElementById('sub_total').innerHTML = parseFloat(parseFloat(total_general) - parseFloat(iva)).toFixed(2);
+	      document.getElementById('sub_total').innerHTML = parseFloat(total_general).toFixed(2);
+	      document.getElementById('total_general').innerHTML = parseFloat(parseFloat(total_general) - parseFloat(retencion)).toFixed(2);
 			
 	    
 
 
 	    }else{
 
-	      var total = document.getElementById('total_general').innerHTML;
+	      var total = document.getElementById('sub_total').innerHTML;
+	     // console.log(total);
 	     //document.getElementById('sub_total').innerHTML = parseFloat(parseFloat(total) / parseFloat(1.19)).toFixed(2);
-	      document.getElementById('total_general').innerHTML = $("#total_general_t").val();
+	     // document.getElementById('total_general').innerHTML = $("#total_general_t").val();
 	     // document.getElementById('sub_total').innerHTML = parseFloat(parseFloat($("#total_general_t").val()) / parseFloat(1.19)).toFixed(2);
 	     // document.getElementById('sub_total').innerHTML = parseFloat(parseFloat($("#total_general_t").val()) / parseFloat(0.08)     ).toFixed(2);
-	      document.getElementById('ivaa').innerHTML = parseFloat(parseFloat(total) * parseFloat(porce)  ).toFixed(2);
+	      total1 = parseFloat(total).toFixed(2) ;
+	      
+	      document.getElementById('ivaa').innerHTML = parseFloat(parseFloat(total1) * parseFloat(porce)  ).toFixed(2);
 
-	      //var sub_total     = parseFloat(parseFloat($("#total_general_t").val()) / parseFloat(1.19)).toFixed(2);
-	      var iva     = parseFloat(parseFloat($("#total_general_t").val()) * parseFloat(porce)   ).toFixed(2);
-	      var total_general = $("#total_general_t").val();
+	      var iva     = parseFloat(parseFloat(total1) * parseFloat(porce)).toFixed(2);
 
-	      document.getElementById('sub_total').innerHTML = parseFloat(parseFloat(total_general) - parseFloat(iva)).toFixed(2);
-		
+		  var total_general = parseFloat(total).toFixed(2);
+
+	      document.getElementById('sub_total').innerHTML = parseFloat(total_general).toFixed(2);
+	      document.getElementById('total_general').innerHTML = parseFloat(parseFloat(total_general) - parseFloat(iva)).toFixed(2);
+			
 
             
 
@@ -1011,15 +1064,22 @@ $(function () {
 
 			//numero = 0;
 			porcentaje = 0;
+	        cuotas=false;
+	        globalDescuento = [];
+            descuento_creados = [];
+
 
             $('#table-articulos tbody tr').remove(); 
+            $('#table-descuentos tbody tr').remove(); 
             $("#mensaje").show();
+            $("#mensaje_d").show();
 
             subTotal();
 
             $("#obras").val('').trigger('change'); 
 
             document.getElementById('porcentaje').innerHTML = parseFloat(porcentaje).toFixed(0);
+            document.getElementById('descuentos').innerHTML = parseFloat(0.00).toFixed(0);
 
     
 
