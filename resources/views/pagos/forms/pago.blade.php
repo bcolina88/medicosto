@@ -23,16 +23,16 @@
 </div>
 </div>
                 </div><!-- /.box-header -->
-                <!-- form start -->  
+                <!-- form start -->
 
 
-           
+
                   <div class="box-body">
                     <div class="col-md-12">
                     <div class="form-group">
-                      
+
                     <div class="col-md-12">
-                        <h3 >Fecha: {{$date}}  
+                        <h3 >Fecha: {{$date}}
                     </div>
 
 
@@ -45,13 +45,13 @@
 	                        <br>
 	                        <label for="exampleInputPassword1">Retención</label> <span style="color: #E6674A;">*</span>
 	                        <select class="form-control select2" id="idliquidacion" name="idliquidacion" style="width: 100%;" required onchange="cambio();"></select>
-	                    	
+
 
 	                    	<div class="btn-group">
 								   <!-- <a class="btn btn-default btn-success fa fa-plus" id='btn-ingresar-cliente'></a>
 								    <a class="btn btn-default btn-warning fa fa-pencil" id='btn-editar-cliente'></a>-->
 								    <a class="btn btn-default btn-warning fa fa-search" id='btn-ver-cliente'> Totales de control</a>
-								    
+
 						    </div>
 
 	                    </div>
@@ -59,7 +59,7 @@
 	                     <div class="col-md-6">
 	                      <br>
 	                      <label for="exampleInputPassword1">Importe</label> <span style="color: #E6674A;">*</span>
-	                 
+
 			            <input type="text" class="form-control campoTel" name="importe" id="importe" required placeholder='0.00'>
 
 
@@ -74,14 +74,14 @@
                     <div class="form-group">
 
 	                    <div class="col-md-6">
-	                      	  <br> 
+	                      	  <br>
 	                        <label for="exampleInputPassword1">Profesional</label> <span style="color: #E6674A;">*</span>
 	                        <select class="form-control select2" id="idprofesional" name="idprofesional" style="width: 100%;" required> </select>
 
 	                    </div>
 
                     <div class="col-md-6">
-                     <br> 
+                     <br>
                        <!--  <label for="exampleInputPassword1">Obras Sociales</label> <span style="color: #E6674A;">*</span>
                        <select class="form-control select2" multiple="multiple" id="obras" name="obras[]" style="width: 100%;" required> </select>
 -->
@@ -106,8 +106,8 @@
                 </thead>
                 <tbody >
                   <tr style="background-color: transparent;">
-          
-                    
+
+
                   </tr>
                 </tbody>
 
@@ -118,14 +118,14 @@
                       <div class="col-md-12">
                         <div class="form-group">
                             <div class="col-sm-4">
-                                {!! Form::label('obras_sociales', 'Obras Sociales:') !!} 
+                                {!! Form::label('obras_sociales', 'Obras Sociales:') !!}
                             </div>
                             <div class="col-sm-8">
                                <select class="form-control select2" id="obras" name="obras" style="width: 100%;" required> </select>
-                                
+
 
                             </div>
-                            <br><br>      
+                            <br><br>
                         </div>
                       </div>
           </td>
@@ -137,9 +137,9 @@
       <div class="row">
         <!-- accepted payments column -->
         <div class="col-xs-6">
-         
-               
-        
+
+
+
         </div>
         <!-- /.col -->
         <div class="col-xs-6">
@@ -168,7 +168,7 @@
             </table>
           </div>
         </div>
-      
+
         <!-- /.col -->
       </div>
 
@@ -179,27 +179,27 @@
                       <br><br>
                     </div>
 
-                  </div><!-- /.box-body --> 
+                  </div><!-- /.box-body -->
                   </div><!-- /.box-body -->
                   </div><!-- /.box-body -->
 
                   <input type="hidden" name="tipo" id="tipo" value="{{$tipo}}">
 
-                
+
                   <div class="box-footer">
 
 
                    <button id="ingresar" class="btn btn-primary">Guardar</button>
                   </div>
                   </div>
-              
 
 
-                 
 
 
-                 
-                
+
+
+
+
               </div><!-- /.box -->
           </div>
 
@@ -280,8 +280,8 @@
 				                </thead>
 				                <tbody >
 				                  <tr style="background-color: transparent;">
-				          
-				                   
+
+
 				                  </tr>
 				                </tbody>
 
@@ -290,7 +290,7 @@
 				                      <p id="mensaje_d" name="mensaje_d" class="alert alert-info text-center " >No hay descuentos.</p>
 				                      <br>
 				          </td>
-				                     
+
 				        </div>
 				        <!-- /.col -->
 				    </div>
@@ -381,7 +381,7 @@ $(function () {
    //document.getElementById('total_general').innerHTML = 1;
     $("#descuento").val({{$pago->descuento}}).trigger('change');
    // $("#ivaa").val({{$pago->iva}}).trigger('change');
- 
+
 
     $('[name="importe"]').val({{$pago->importe}}).trigger('change');
 
@@ -407,25 +407,25 @@ $(function () {
           var total_general = item.total_general;
 
             if(!articulos.includes(item.id)) {
-     
-                
+
+
                 $("#mensaje").hide();
 
                 $('#table-articulos tbody').append('<tr>'+
-                    
+
                   '<td style="width: 90px;">'+ item.nombre +'</td>'+
                   '<td> <input type="text" class="form-control" style="width: 70px;" min="1" id="cantidad'+ i+'" name="cantidad'+ i+'" value="1" onchange="sumar('+ item.id +',this.value,'+ i+');"  > </td>'+
                   '<td> <input type="text" class="form-control" style="width: 70px;" id="precio'+i+'" name="precio'+ i+'" value="'+ item.precio+'" onchange="precio('+i+','+ item.id +');" ></td>'+
                   '<td> <span id="spTotal'+ i+'"></span></td>'+
                   '<td align="center"><button class="btn btn-danger btn-xs" onclick="eliminarArticulo(this,'+ item.id +');"><i class="fa fa-times" aria-hidden="true"></i></button></td>'+
-                  '</tr>'); 
+                  '</tr>');
 
-                
+
                  $("#cantidad"+i).val(item.cantidad).trigger('change');
                 //$("#precio"+i).val(item.precio).trigger('change');
 
                  // porcentaje=parseFloat(item.iva).toFixed(2);
-                  //item.iva; 
+                  //item.iva;
 
                   //console.log({{$pago->iva}});
                  //$("#porcentaje").val(1).trigger('change');
@@ -436,7 +436,7 @@ $(function () {
 
 
                   $("#importe"+i).val(item.cantidad).trigger('change');
-                
+
                   i++;
 
                   globalItems.push(item);
@@ -449,16 +449,16 @@ $(function () {
 
         });
 
-		
+
         document.getElementById('total_general').innerHTML = parseFloat('{{$pago->total}}').toFixed(2);
        // porcentaje= parseFloat('{{$pago->iva}}').toFixed(2);
-   
 
 
-        
+
+
         msg.descuentos.forEach(function(item) {
 
-	       
+
 	       	 var atem ={};
              atem.nombre = item.nombre;
              atem.importe = parseFloat(item.valor).toFixed(2);
@@ -467,12 +467,12 @@ $(function () {
 	          $("#mensaje_d").hide();
 
               $('#table-descuentos tbody').append('<tr>'+
-                  
+
                   '<td style="width: 90px;">'+ item.nombre +'</td>'+
                   '<td style="width: 90px;">'+ item.valor +'</td>'+
-            
+
                   '<td align="center"><button class="btn btn-danger btn-xs" onclick="eliminarDescuento(this,'+ kk +');"><i class="fa fa-times" aria-hidden="true"></i></button></td>'+
-                  '</tr>'); 
+                  '</tr>');
 
 
 
@@ -486,10 +486,10 @@ $(function () {
         });
 
                   document.getElementById('ivaa').innerHTML = {{$pago->iva}};
-        
 
 
-        
+
+
       })
       .fail(function(msg) {
         console.log("error en getAlbaranesItems");
@@ -515,14 +515,14 @@ $(function () {
 
 	});
 
-	
+
 
 	$('[name="obras"]').on('select2:select', function (e) {
 
 		  if ($('#idliquidacion').val()==="") {
 
 
-              $('#obras').val('').trigger('change'); 
+              $('#obras').val('').trigger('change');
                alert("Debe seleccionar una Retención");
 
 
@@ -534,7 +534,7 @@ $(function () {
 	      	 var data = e.params.data;
         	 selectArticleID(data.id,retencion);
 	      }
-       
+
     });
 
 
@@ -570,7 +570,7 @@ $(function () {
 	        })
 	        .done(function(msg) {
 
-	        	@if (!$pago) {
+	        	@if (!$pago)
 	        		selectDescuento("Cuota F.O.R.N.",msg.federacion_cuota);
 	        	    selectDescuento("Cuota Colegio",msg.colegio_cuota);
 	        	    cuotas=true;
@@ -578,8 +578,8 @@ $(function () {
 	        	@endif
 
 
-          
-	          $('#modal_agregar-descuento').modal('toggle'); 
+
+	          $('#modal_agregar-descuento').modal('toggle');
 
 
 	        })
@@ -589,7 +589,7 @@ $(function () {
 
 
 	    }
-       
+
 
     });
 
@@ -597,7 +597,7 @@ $(function () {
 
       if ($('#idliquidacion').val()==="") {
           alert("Debe seleccionar una Retención");
-      }else{ 
+      }else{
 
           $.ajax({
             url: "{{ route('getDescuento') }}",
@@ -619,7 +619,7 @@ $(function () {
 
 
             $('#ver-cliente').html('<section class="invoice"> <div class="row"> <div class="col-xs-12"> <h2 class="page-header"> <i class="fa fa-archive"> Retención #'+msg.id+'</i> <small class="pull-right">Fecha: '+msg.fecha+'</small> </h2> </div> </div> <div class="row invoice-info"> <div class="col-sm-6 invoice-col"> <address> <b> % por fact. de Colegio: </b> '+parseFloat(msg.factura_colegio).toFixed(2)+' <br> <b>% por fact. de Federación:</b> '+parseFloat(msg.factura_federacion).toFixed(2)+' <br> <br></address> </div> <div class="col-sm-6 invoice-col"> <address>  <b>Cuota de Socios Federación: </b> $ '+parseFloat(msg.federacion_cuota).toFixed(2)+'<br> <b>Cuota de Socios Colegio: </b> $ '+parseFloat(msg.colegio_cuota).toFixed(2)+'<br> </address> </div> </div> </section>');
-            $('#modal_ver_cliente').modal('toggle'); 
+            $('#modal_ver_cliente').modal('toggle');
 
           })
           .fail(function(msg) {
@@ -627,13 +627,13 @@ $(function () {
           });
 
       }
-      
+
     });
 
 
 	$('#ingresar').click(function(){
       var tipo = "guardar";
-      agregarOrden(tipo); 
+      agregarOrden(tipo);
 
     });
 
@@ -663,7 +663,7 @@ $(function () {
 	         filal+="<option value="+item.id+">"+item.id+" </option>";
 	      });
 
-	   
+
 
 	      $("#idprofesional").html(filap);
 	      $("#obras").html(filao);
@@ -673,12 +673,12 @@ $(function () {
 
 	      @if ($pago)
 
-	      
-		      $("#idprofesional").val("{{$pago->idprofesional}}").trigger('change');     
-		      $("#idliquidacion").val("{{$pago->idliquidacion}}").trigger('change'); 
 
-		        
-		     /* var images = "{{$pago->obras}}"; 
+		      $("#idprofesional").val("{{$pago->idprofesional}}").trigger('change');
+		      $("#idliquidacion").val("{{$pago->idliquidacion}}").trigger('change');
+
+
+		     /* var images = "{{$pago->obras}}";
 		      var images1 = images.split(",");
 		      var ii=[];
 
@@ -708,16 +708,16 @@ $(function () {
 	        dataType: 'json',
 	    }).done(function(msg) {
 
-	
+
 	      var filal="<option value=''>Seleccione Retención</option>";
 
 	      msg.liquidaciones.forEach(function(item) {
 	         filal+="<option value="+item.id+">"+item.id+" </option>";
 	      });
 
-	
+
 	      $("#idliquidacion").html(filal);
-          $("#idliquidacion").val(tt); 
+          $("#idliquidacion").val(tt);
 
 
 	    }).fail(function(msg) {});
@@ -741,34 +741,34 @@ $(function () {
         msg.forEach(function(item) {
         //agregamos los items a la tabla.
 
-          
-          
+
+
           if(!articulos.includes(item.id)) {
-   
-              
+
+
               $("#mensaje").hide();
 
               $('#table-articulos tbody').append('<tr>'+
-                  
+
                   '<td style="width: 90px;">'+ item.nombre +'</td>'+
                   '<td> <input type="text" class="form-control" style="width: 70px;" min="1" id="cantidad'+ i+'" name="cantidad'+ i+'" value="1" onchange="sumar('+ item.id +',this.value,'+ i+');"  > </td>'+
                   '<td> <input type="text" class="form-control" style="width: 70px;" id="precio'+i+'" name="precio'+ i+'" value="'+ item.retencion.factura_federacion+'" onchange="precio('+i+','+ item.id +');" ></td>'+
                   '<td> <span id="spTotal'+ i+'"></span></td>'+
                   '<td align="center"><button class="btn btn-danger btn-xs" onclick="eliminarArticulo(this,'+ item.id +');"><i class="fa fa-times" aria-hidden="true"></i></button></td>'+
-                  '</tr>'); 
+                  '</tr>');
 
-                  $('#cantidad'+i).trigger('change'); 
+                  $('#cantidad'+i).trigger('change');
                   i++;
 
 
-          	    porcentaje=item.retencion.factura_colegio; 
+          	    porcentaje=item.retencion.factura_colegio;
                 document.getElementById('porcentaje').innerHTML = parseFloat(porcentaje).toFixed(0);
 
 
                 globalItems.push(item);
                 articulos.push(item.id);
           }
-          
+
 
         });
 
@@ -784,7 +784,7 @@ $(function () {
 
 
 	      var item = $(element).closest("tr").find('[name="td-hidden"]').text();
-	      
+
 	      var posicion = arti_creados.indexOf(id);
 	      var removed1 = globalItems.splice(posicion, 1);
 	      var removed2 = articulos.splice(posicion, 1);
@@ -792,11 +792,11 @@ $(function () {
 
 
 	      var removed4 = arti_creados.splice(posicion, 1);
-	      
+
 
 	      $(element).parent().parent().remove();
 	      if(globalItems.length === 0) {
-	        	$("#mensaje").show(); 
+	        	$("#mensaje").show();
 	        	$("#articulo").val("").trigger('change');
 	      }
 	      subTotal();
@@ -808,16 +808,16 @@ $(function () {
 
 
 	      var item = $(element).closest("tr").find('[name="td-hidden"]').text();
-	      
+
 	      var posicion = descuento_creados.indexOf(id);
 	      var removed1 = globalDescuento.splice(posicion, 1);
 	      var removed2 = descuento_creados.splice(posicion, 1);
 
-	      
+
 
 	      $(element).parent().parent().remove();
 	      if(globalDescuento.length == 0) {
-	        	$("#mensaje_d").show(); 
+	        	$("#mensaje_d").show();
 	      }
 
           sumarDescuento();
@@ -828,13 +828,13 @@ $(function () {
 
     function sumar (id,valor,i) {
 
-        var total = 0; 
-        
+        var total = 0;
+
         var articulo ={};
         var precio = $('[name="precio'+i+'"]').val();
 
 
-    
+
 
         valor = parseFloat(valor); // Convertir el valor a un entero (número).
         total = document.getElementById('spTotal'+ i).innerHTML;
@@ -873,8 +873,8 @@ $(function () {
         }
 
         subTotal();
-        
-    
+
+
     }
 
     function subTotal(){
@@ -906,20 +906,20 @@ $(function () {
 
 
 
-	 
+
 
 	    var porce = parseFloat(parseFloat(porcentaje)/100).toFixed(2);
-	
+
 
 	    if (descuento!="") {
 
 	      //var total = $("#total_general_t").val();
 
 	      total1 = parseFloat(total).toFixed(2) ;
-	
+
 	      document.getElementById('total_general').innerHTML = parseFloat(total1).toFixed(2);
 	      document.getElementById('ivaa').innerHTML = parseFloat(parseFloat(total1) * parseFloat(porce)).toFixed(2);
-	      
+
 
 	      var iva = parseFloat(parseFloat(total1) * parseFloat(porce)).toFixed(2);
 
@@ -930,8 +930,8 @@ $(function () {
 
 	      document.getElementById('sub_total').innerHTML = parseFloat(total_general).toFixed(2);
 	      document.getElementById('total_general').innerHTML = parseFloat(parseFloat(total_general) - parseFloat(retencion)).toFixed(2);
-			
-	    
+
+
 
 
 	    }else{
@@ -943,7 +943,7 @@ $(function () {
 	     // document.getElementById('sub_total').innerHTML = parseFloat(parseFloat($("#total_general_t").val()) / parseFloat(1.19)).toFixed(2);
 	     // document.getElementById('sub_total').innerHTML = parseFloat(parseFloat($("#total_general_t").val()) / parseFloat(0.08)     ).toFixed(2);
 	      total1 = parseFloat(total).toFixed(2) ;
-	      
+
 	      document.getElementById('ivaa').innerHTML = parseFloat(parseFloat(total1) * parseFloat(porce)  ).toFixed(2);
 
 	      var iva     = parseFloat(parseFloat(total1) * parseFloat(porce)).toFixed(2);
@@ -952,9 +952,9 @@ $(function () {
 
 	      document.getElementById('sub_total').innerHTML = parseFloat(total_general).toFixed(2);
 	      document.getElementById('total_general').innerHTML = parseFloat(parseFloat(total_general) - parseFloat(iva)).toFixed(2);
-			
 
-            
+
+
 
 	    }
     }
@@ -990,7 +990,7 @@ $(function () {
 
 	  while (i <= articulos.length) {
 
-	      
+
 	      if($('#cantidad'+i).val()===""){
 	        cantidad_vacia=false;
 	        alert("coloque total facturacion de odontólogo de cada obra seleccionada");
@@ -1008,11 +1008,11 @@ $(function () {
 
 
 	      	$.ajax({
-	          url: "{{ route('liquidaciones.store') }}",                                          
-	          type: "POST",                 
+	          url: "{{ route('liquidaciones.store') }}",
+	          type: "POST",
 	          dataType: 'json',
 	          contentType: 'application/json',
-	          data: JSON.stringify({ 
+	          data: JSON.stringify({
 	            "_token":         "{{ csrf_token() }}",
 	            "idliquidacion":  $('[name="idliquidacion"]').val(),
 	            "importe":        $('[name="importe"]').val(),
@@ -1027,7 +1027,7 @@ $(function () {
                 "tipo":          "{{$tipo}}",
                 "id":             numero,
 
-	           
+
 	          })
 	        })
 	        .done(function(msg) {
@@ -1038,13 +1038,13 @@ $(function () {
 
 	        })
 	        .fail(function(msg) {
-	        
+
 	        });
 
 
 	      };
 
-	      
+
 	  };
 
     }
@@ -1069,19 +1069,19 @@ $(function () {
             descuento_creados = [];
 
 
-            $('#table-articulos tbody tr').remove(); 
-            $('#table-descuentos tbody tr').remove(); 
+            $('#table-articulos tbody tr').remove();
+            $('#table-descuentos tbody tr').remove();
             $("#mensaje").show();
             $("#mensaje_d").show();
 
             subTotal();
 
-            $("#obras").val('').trigger('change'); 
+            $("#obras").val('').trigger('change');
 
             document.getElementById('porcentaje').innerHTML = parseFloat(porcentaje).toFixed(0);
             document.getElementById('descuentos').innerHTML = parseFloat(0.00).toFixed(0);
 
-    
+
 
 
 
@@ -1099,13 +1099,13 @@ $(function () {
 	  document.getElementById('total_descuento').innerHTML = parseFloat(sumaD).toFixed(2);
 	  //document.getElementById('descuento').innerHTML = parseFloat(sumaD).toFixed(2);
 	  //var total = document.getElementById('total_general').innerHTML;
-	  $("#descuento").val(parseFloat(sumaD).toFixed(2)); 
+	  $("#descuento").val(parseFloat(sumaD).toFixed(2));
 	  sumaD= 0.00;
 
 	  subTotal();
 
 
-    
+
     }
 
 
@@ -1120,16 +1120,16 @@ $(function () {
              item.nombre = nombre;
              item.importe = parseFloat(importe).toFixed(2);
 
-              
+
               $("#mensaje_d").hide();
 
               $('#table-descuentos tbody').append('<tr>'+
-                  
+
                   '<td style="width: 90px;">'+ nombre +'</td>'+
                   '<td style="width: 90px;">'+ importe +'</td>'+
-            
+
                   '<td align="center"><button class="btn btn-danger btn-xs" onclick="eliminarDescuento(this,'+ kk +');"><i class="fa fa-times" aria-hidden="true"></i></button></td>'+
-                  '</tr>'); 
+                  '</tr>');
 
 
 
@@ -1141,13 +1141,13 @@ $(function () {
                 kk++;
 
 
-          
+
     }
 
 
-    
+
 
 
 </script>
-   
+
 @endsection
