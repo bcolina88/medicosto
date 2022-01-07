@@ -13,15 +13,38 @@
 
     .table>tbody>tr>td {
         border-top: 1px solid #fff;
+        padding: 0px;
     }
 
     .table>thead>tr>th {
         border-bottom: 2px solid #fff;
+        padding: 0px;
     }
 
     .table>tbody>tr>th {
         border-bottom: 2px solid #fff;
+        padding: 0px;
     }
+
+    .table > thead > tr > th,
+	.table > tbody > tr > th,
+	.table > tfoot > tr > th,
+	.table > thead > tr > td,
+	.table > tbody > tr > td,
+	.table > tfoot > tr > td {
+	  padding: 0px;
+
+	}
+
+
+	.table-condensed > thead > tr > th,
+	.table-condensed > tbody > tr > th,
+	.table-condensed > tfoot > tr > th,
+	.table-condensed > thead > tr > td,
+	.table-condensed > tbody > tr > td,
+	.table-condensed > tfoot > tr > td {
+	  padding: 0px;
+	}
 
 
 }
@@ -124,33 +147,42 @@
 
     </div>
 
-    <div class="col-md-12" style="font-size: 12px;line-height: 0.5;text-align:left;border-top: 1px solid #fff;border-bottom: 2px solid #fff;">
+    <div class="col-md-12" style="font-size: 12px;line-height: 0.0000001;text-align:left;border-top: 1px solid #fff;border-bottom: 2px solid #fff;">
 
 
         <div class="">
 
             
-            <table class="table">
+            <table class="table" style="padding: 0px">
         
-                <tbody style=" border-top: 1px solid #fff;border-bottom: 2px solid #fff;">
+                <tbody style=" border-top: 1px solid #fff;border-bottom: 2px solid #fff;padding: 0px">
       
-                    <tr style=" border-top: 1px solid #fff;border-bottom: 2px solid #fff;">
+                    
+
+                    <tr style=" border-top: 1px solid #fff;border-bottom: 2px solid #fff;padding: 0px">
               
-                        <td style="width: 200px;text-align:center"> <p>Pago O. Sociales</p> </td> 
-                        <td style="width: 200px"> <p>62.895,14</p> </td> 
-                        <td style="width: 50px;">  <p>Ingresos Brutos</p> </td> 
-                        <td style="width: 200px;text-align:center"> <p>0,00</p> </td> 
+                        <td style="width: 170px;text-align:center;padding: 0px"> <p>Pago O. Sociales</p> </td> 
+                        <td style="width: 150px;padding: 0px"> <p>{{number_format($pago->subtotal, 2, ',' , '.' )}}</p> </td> 
+                        <td style="width: 170px;padding: 0px">  <p>Alícuota Colegio</p> </td> 
+                        <td style="width: 150px;text-align:right;padding: 0px"> <p>{{number_format($pago->iva, 2, ',' , '.' )}}</p> </td> 
 
                     </tr>
-                    <tr style=" border-top: 1px solid #fff;border-bottom: 2px solid #fff;">
+
+
+                	@foreach ($descuentos as $key => $descuento)
+
+
+                    <tr style=" border-top: 1px solid #fff;border-bottom: 2px solid #fff;padding: 0px">
               
-                        <td style="width: 200px;color:white;border-top: 1px solid #fff;border-bottom: 2px solid #fff;"> <p>000000</p> </td> 
-                        <td style="width: 100px;color:white;border-top: 1px solid #fff;border-bottom: 2px solid #fff;"> <b>000000</b> </td> 
-                        <td style="width: 50px;color:white;border-top: 1px  solid #fff;border-bottom: 2px solid #fff;">  <b>000000</b> </td> 
-                        <td style="width: 200px;color:white;border-top: 1px solid #fff;border-bottom: 2px solid #fff;"> <p>000000</p> </td> 
+                        <td style="width: 170px;text-align:center;color:white;padding: 0px"> <p>000000</p> </td> 
+                        <td style="width: 150px;color:white;padding: 0px"> <p>000000</p> </td> 
+                        <td style="width: 170px;padding: 0px">  <p> {{$descuento->nombre}}</p> </td> 
+                        <td style="width: 150px;text-align:right;padding: 0px"> <p>{{number_format($descuento->valor, 2, ',' , '.' )}}</p> </td> 
 
                     </tr>
-      
+
+                    @endforeach
+
       
                 </tbody>
             </table>
@@ -160,8 +192,44 @@
     </div>
 
 
+    <div class="col-md-12" style="font-size: 12px;line-height: 0.0000001;text-align:left;border-top: 1px solid #fff;border-bottom: 2px solid #fff;padding: 0px">
 
-    <div class="col-md-12" style="font-size: 12px;line-height: 0.5;text-align:left;border-top: 1px solid #fff;border-bottom: 2px solid #fff;">
+
+        <div class="">
+
+            <table class="table" style="padding: 0px">
+        
+                <tbody style="padding: 0px">
+      
+                    <tr style=" border-top: 1px solid #fff;border-bottom: 2px solid #fff;border-top: 1px solid #fff;border-bottom: 2px solid #fff;padding: 0px">
+                      
+                        <td style="width: 170px;text-align:center;padding: 0px"> <p><b>Pagos / Reintegros</b></p> </td> 
+                        <td style="width: 150px;padding: 0px"> <p><b>{{number_format($pago->subtotal, 2, ',' , '.' )}}</b></p> </td> 
+                        <td style="width: 170px;padding: 0px"><p><b>Descuentos / Retenciones</b></p> </td> 
+                        <td style="width: 150px;text-align:right;padding: 0px"> <p><b>{{number_format($d, 2, ',' , '.' )}}</b></p> </td> 
+
+                    </tr>
+
+                    <tr style=" border-top: 1px solid #fff;border-bottom: 2px solid #fff;border-top: 1px solid #fff;border-bottom: 2px solid #fff;padding: 0px">
+                      
+                        <td style="width: 170px;text-align:center;color:white;padding: 0px"> <p>000000</p> </td> 
+                        <td style="width: 150px;color:white;padding: 0px"> <p>000000</p> </td> 
+                        <td style="width: 170px;padding: 0px">  <p><b>Total Liquidación</b></p> </td> 
+                        <td style="width: 150px;text-align:right;border: 1px solid #000;padding: 0px"> <p><b>{{number_format($pago->total, 2, ',' , '.' )}}</b></p> </td> 
+
+                    </tr>
+      
+                </tbody>
+            </table>
+
+            
+        </div>
+
+    </div>
+
+
+
+    <div class="col-md-12" style="font-size: 12px;line-height: 0.0000001;text-align:left;border-top: 1px solid #fff;border-bottom: 2px solid #fff;">
 
 
         <div class="">
@@ -185,6 +253,67 @@
         </div>
 
     </div>
+
+    <div class="col-md-12" style="font-size: 12px;line-height: 0.0000001;text-align:left;border-top: 1px solid #fff;border-bottom: 2px solid #fff;">
+
+
+        <div class="">
+
+            
+            <table class="table" style="padding: 0px">
+        
+                <tbody style=" border-top: 1px solid #fff;border-bottom: 2px solid #fff;padding: 0px">
+
+
+                   @foreach ($pagoItems as $key => $pagoItem)
+      
+                    <tr style=" border-top: 1px solid #fff;border-bottom: 2px solid #fff;padding: 0px">
+              
+                        <td style="width: 30px;padding: 0px;color:white;"> <p>62.895,14</p> </td> 
+                        <td style="width: 170px;text-align:left;padding-left: 0px"> <p>{{$pagoItem->obra->nombre}}</p> </td> 
+                        <td style="width: 120px;padding: 0px;color:white;"> <p>62.895,14</p> </td> 
+                        <td style="width: 170px;padding: 0px;color:white;">  <p>Alícuota Colegio</p> </td> 
+                        <td style="width: 130px;text-align:right;padding: 0px"> <p>{{number_format($pagoItem->total, 2, ',' , '.' )}}</p> </td> 
+
+                    </tr>
+
+                    @endforeach
+    
+                </tbody>
+            </table>
+            
+        </div>
+
+    </div>
+
+    <div class="col-md-12" style="font-size: 12px;line-height: 0.0000001;text-align:left;border-top: 1px solid #fff;border-bottom: 2px solid #fff;padding: 0px">
+
+
+        <div class="">
+
+            <table class="table" style="padding: 0px">
+        
+                <tbody style="padding: 0px">
+      
+                   
+
+                    <tr style=" border-top: 1px solid #fff;border-bottom: 2px solid #fff;border-top: 1px solid #fff;border-bottom: 2px solid #fff;padding: 0px">
+                      
+                        <td style="width: 170px;text-align:center;color:white;padding: 0px"> <p>000000</p> </td> 
+                        <td style="width: 150px;color:white;padding: 0px"> <p>000000</p> </td> 
+                        <td style="width: 170px;padding: 0px">  <p><b>Total Pagos</b></p> </td> 
+                        <td style="width: 150px;text-align:right;padding: 0px"> <p><b>{{number_format($pago->subtotal, 2, ',' , '.' )}}</b></p></td> 
+
+                    </tr>
+      
+                </tbody>
+            </table>
+
+            
+        </div>
+
+    </div>
+
 
 
    

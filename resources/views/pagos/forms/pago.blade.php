@@ -571,9 +571,17 @@ $(function () {
 	        .done(function(msg) {
 
 	        	@if (!$pago)
-	        		selectDescuento("Cuota F.O.R.N.",msg.federacion_cuota);
-	        	    selectDescuento("Cuota Colegio",msg.colegio_cuota);
-	        	    cuotas=true;
+
+	        	      if (!cuotas) {
+
+	        	      	selectDescuento("Cuota F.O.R.N.",msg.federacion_cuota);
+		        	    selectDescuento("Cuota Colegio",msg.colegio_cuota);
+		        	    cuotas=true;
+
+
+	        	      };
+	        	    
+		        		
 
 	        	@endif
 

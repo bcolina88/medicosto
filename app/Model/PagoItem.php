@@ -17,12 +17,12 @@ class PagoItem extends Model
 
     public function pago()
     {
-         return $this->belongsTo(Pago::class, 'idpago', 'id');
+         return $this->belongsTo('App\Model\Pago', 'idpago', 'id');
     }
 
     public function obra()
     {
-         return $this->belongsTo(Article::class, 'idobra', 'id');
+         return $this->belongsTo('App\Model\Obra', 'idobra', 'id');
     }
 
 

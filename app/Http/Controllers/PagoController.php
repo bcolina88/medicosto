@@ -343,8 +343,16 @@ class PagoController extends Controller
        // $pdf = PDF::loadView('pdf.recibo', compact('historical','ssn','ytd'));
         $pago =  Pago::with(['liquidacion', 'profesional'])->where('id',$id)->first();
 
+        $pagoItems =  PagoItem::with(['obra'])->where('idpago',$id)->get();
+        $descuentos =  Descuento::with(['profesional'])->where('idpago',$id)->get();
 
-        $pdf = PDF::loadView('pdf.recibo', compact('pago'));
+
+
+        $d =$pago->iva + $pago->descuento;
+
+
+        $pdf = PDF::loadView('pdf.recibo', compact(['pago','pagoItems','descuentos','d']));
+
 
 
         $nomb = $pago->profesional->apellido;

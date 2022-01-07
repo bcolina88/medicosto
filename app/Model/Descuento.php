@@ -17,12 +17,12 @@ class Descuento extends Model
 
     public function pago()
     {
-         return $this->belongsTo(Pago::class, 'idpago', 'id');
+         return $this->belongsTo('App\Model\Pago', 'idpago', 'id');
     }
 
     public function profesional()
     {
-         return $this->belongsTo(Article::class, 'idprofesional', 'id');
+         return $this->belongsTo('App\Model\Profesional', 'idprofesional', 'id');
     }
 
 
