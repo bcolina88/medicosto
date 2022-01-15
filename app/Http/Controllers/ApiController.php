@@ -71,9 +71,13 @@ class ApiController extends Controller
     public function getCarga(Request  $request)
     {
 
-        $Profesional = Profesional::all();
+        /*$Profesional = Profesional::all();
         $Liquidacion = Liquidacion::all();
-        $Obra = Obra::all();
+        $Obra = Obra::all();*/
+
+        $Profesional = Profesional::where('active',1)->get();
+        $Liquidacion = Liquidacion::all();
+        $Obra = Obra::where('active',1)->get();
 
  
         return ['profesionales' => $Profesional, 'obras' => $Obra, 'liquidaciones' => $Liquidacion];

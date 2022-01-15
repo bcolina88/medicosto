@@ -25,7 +25,7 @@
 <div class="login-box">
   <div class="login-logo text-center">
 
-     <a href="/"><b>Medi</b>costo</a>
+     <a href="/"><b>Colegio Odontológico de Cipolletti</b></a>
 
 
  

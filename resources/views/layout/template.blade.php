@@ -427,7 +427,7 @@
 
     </div>
     <!-- Default to the left -->
-    <strong>Copyright &copy; 2021 <a href="#"><b> bcsoft</b></a>.</strong> All rights reserved.
+    <strong>Copyright &copy; 2022 <a href="#"><b> bcsoft</b></a>.</strong> All rights reserved.
   </footer>
  
   <!-- Control Sidebar -->
