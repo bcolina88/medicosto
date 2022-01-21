@@ -96,7 +96,14 @@ class ApiController extends Controller
 
      public function getObra(Request  $request)
     {
-      $article = Obra::where('id',$request->id)->get();
+      
+
+      //$article = Obra::where('id',$request->id)->get();
+
+      $article = Profesional::where('active',1)->where('id',$request->id)->get();
+
+      
+
       $retencion = Liquidacion::where('id', $request->retencion)->first();
       $article[0]['retencion']= $retencion;
 
@@ -114,7 +121,11 @@ class ApiController extends Controller
 
       foreach ($albaranesItems as $key => $items) {
 
-          $article = Obra::where('id',$items['idobra'])->first();
+          //$article = Obra::where('id',$items['idobra'])->first();
+          $article = Profesional::where('id',$items['idprofesional'])->first();
+
+
+
 
           $articulo = array('idarticulo' => $items['idobra'],'nombre' => $article->nombre,'importe' => $pago->porcentaje_cobro,'cantidad' => $items['total_fact_odont'],'id' => $article->id,
             'total' => $items['total'],  'total_general' => $pago->total,'sub_total' => $pago->subtotal,'iva' => $pago->iva, 'precio' => $items['porcentaje_cobro'], 'retencion' =>$liquidacion);  

@@ -106,10 +106,10 @@
       
                     <tr style=" border-top: 1px solid #fff;border-bottom: 2px solid #fff;border-top: 1px solid #fff;border-bottom: 2px solid #fff;">
                         <td style="border-top: 1px solid #fff;border-bottom: 2px solid #fff;text-align:left;" class="text-left">
-                            <p><b>Profesional: {{$pago->profesional->id}}</b></p>
+                            <p><b>Obra Social: {{$pago->obra->id}}</b></p>
                          </td>
                         <td style="border-top: 1px solid #fff;border-bottom: 2px solid #fff;" class="text-left;">
-                            <p>{{$pago->profesional->apellido}}, {{$pago->profesional->nombre}}</p>
+                            <p>{{$pago->obra->nombre}}</p>
                         </td>
 
                     </tr>
@@ -161,7 +161,7 @@
 
                     <tr style=" border-top: 1px solid #fff;border-bottom: 2px solid #fff;padding: 0px">
               
-                        <td style="width: 170px;text-align:center;padding: 0px"> <p>Pago O. Sociales</p> </td> 
+                        <td style="width: 170px;text-align:center;padding: 0px"> <p>Pago O. Social</p> </td> 
                         <td style="width: 150px;padding: 0px"> <p>{{number_format($pago->subtotal, 2, ',' , '.' )}}</p> </td> 
                         <td style="width: 170px;padding: 0px">  <p>Alícuota Colegio</p> </td> 
                         <td style="width: 150px;text-align:right;padding: 0px"> <p>{{number_format($pago->iva, 2, ',' , '.' )}}</p> </td> 
@@ -270,7 +270,7 @@
                     <tr style=" border-top: 1px solid #fff;border-bottom: 2px solid #fff;padding: 0px">
               
                         <td style="width: 30px;padding: 0px;color:white;"> <p>62.895,14</p> </td> 
-                        <td style="width: 170px;text-align:left;padding-left: 0px"> <p>{{$pagoItem->obra->nombre}}</p> </td> 
+                        <td style="width: 170px;text-align:left;padding-left: 0px"> <p>{{$pagoItem->profesional->nombre}}</p> </td> 
                         <td style="width: 120px;padding: 0px;color:white;"> <p>62.895,14</p> </td> 
                         <td style="width: 170px;padding: 0px;color:white;">  <p>Alícuota Colegio</p> </td> 
                         <td style="width: 130px;text-align:right;padding: 0px"> <p>{{number_format($pagoItem->total, 2, ',' , '.' )}}</p> </td> 

@@ -14,7 +14,7 @@ class Pago extends Model
      */
 
     protected $fillable = [
-        'fecha', 'importe','idliquidacion','idprofesional','obras','created_at','updated_at','iva', 'descuento', 'subtotal', 'total'];
+        'fecha', 'importe','idliquidacion','idobra','profesionales','created_at','updated_at','iva', 'descuento', 'subtotal', 'total'];
 
 
      public function liquidacion()
@@ -24,10 +24,10 @@ class Pago extends Model
     }
 
 
-     public function profesional()
+     public function obra()
     {
 
-        return $this->belongsTo('App\Model\Profesional','idprofesional','id');
+        return $this->belongsTo('App\Model\Obra','idobra','id');
     }
 
    /*  public function obra()

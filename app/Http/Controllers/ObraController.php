@@ -35,6 +35,7 @@ class ObraController extends Controller
 
 
         $obras = 	Obra::Where('obras.nombre','LIKE','%'.$search.'%')
+        			  ->orWhere('obras.id','LIKE','%'.$search.'%')
                       ->orderBy('obras.id','DESC')
                       ->select('obras.*')
                       ->paginate(25);

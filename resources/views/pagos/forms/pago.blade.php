@@ -31,12 +31,6 @@
                     <div class="col-md-12">
                     <div class="form-group">
 
-                    <div class="col-md-12">
-                        <h3 >Fecha: {{$date}}
-                    </div>
-
-
-
 
 
                     <div class="form-group">
@@ -56,15 +50,23 @@
 
 	                    </div>
 
-	                     <div class="col-md-6">
-	                      <br>
-	                      <label for="exampleInputPassword1">Importe</label> <span style="color: #E6674A;">*</span>
-
-			            <input type="text" class="form-control campoTel" name="importe" id="importe" required placeholder='0.00'>
+	                 
 
 
+	                    <div class="col-md-6">
+		                    <br>
+		                    <label for="exampleInputPassword1">Fecha</label> 
+		                 
+		            
+		                    <input type="text" class="form-control" name="fecha" id="datepicker_inicio">
+                        
+                        </div>
 
-	                    </div>
+                   
+
+
+
+
                     </div>
 
                     <div class="col-md-12">
@@ -75,8 +77,8 @@
 
 	                    <div class="col-md-6">
 	                      	  <br>
-	                        <label for="exampleInputPassword1">Profesional</label> <span style="color: #E6674A;">*</span>
-	                        <select class="form-control select2" id="idprofesional" name="idprofesional" style="width: 100%;" required> </select>
+	                        <label for="exampleInputPassword1">Obra</label> <span style="color: #E6674A;">*</span>
+	                        <select class="form-control select2" id="idobra" name="idobra" style="width: 100%;" required> </select>
 
 	                    </div>
 
@@ -97,7 +99,7 @@
           <table class="table table-bordered table-hover table-responsive" id="table-articulos">
                 <thead>
                 <tr>
-                  <th style="width: 90px;">Nombre Obra S.</th>
+                  <th style="width: 90px;">Nombre del Profesional</th>
                   <th style="width: 50px;">Total de Fact. de Odont.</th>
                   <th style="width: 50px;">% de cobro de factura por federación</th>
                   <th style="width: 50px;">Total</th>
@@ -113,15 +115,15 @@
 
           </table>
           <td colspan="7">
-                      <p id="mensaje" name="mensaje" class="alert alert-info text-center " >No hay obras sociales.</p>
+                      <p id="mensaje" name="mensaje" class="alert alert-info text-center " >No hay profesionales.</p>
                       <br>
                       <div class="col-md-12">
                         <div class="form-group">
                             <div class="col-sm-4">
-                                {!! Form::label('obras_sociales', 'Obras Sociales:') !!}
+                                {!! Form::label('profesionales', 'Profesionales:') !!}
                             </div>
                             <div class="col-sm-8">
-                               <select class="form-control select2" id="obras" name="obras" style="width: 100%;" required> </select>
+                               <select class="form-control select2" id="profesionales" name="profesionales" style="width: 100%;" required> </select>
 
 
                             </div>
@@ -143,7 +145,7 @@
         </div>
         <!-- /.col -->
         <div class="col-xs-6">
-          <p class="lead">Monto adeudado {{$date}} </p>
+          <p class="lead">Monto adeudado  </p>
 
           <div class="table-responsive">
             <table class="table">
@@ -363,6 +365,8 @@ $(function () {
 
 
     $('.select2').select2();
+    $('#datepicker_inicio').datetimepicker({format: 'DD-MM-YYYY'});
+
     $('#datepicker_fecha').val(moment(new Date()).format("YYYY-MM-DD"));
     $('#datepicker_fecha').datetimepicker({
       format: 'YYYY-MM-DD'
@@ -383,7 +387,7 @@ $(function () {
    // $("#ivaa").val({{$pago->iva}}).trigger('change');
 
 
-    $('[name="importe"]').val({{$pago->importe}}).trigger('change');
+   // $('[name="importe"]').val({{$pago->importe}}).trigger('change');
 
 
     $.ajax({
@@ -517,12 +521,12 @@ $(function () {
 
 
 
-	$('[name="obras"]').on('select2:select', function (e) {
+	$('[name="profesionales"]').on('select2:select', function (e) {
 
 		  if ($('#idliquidacion').val()==="") {
 
 
-              $('#obras').val('').trigger('change');
+              $('#profesionales').val('').trigger('change');
                alert("Debe seleccionar una Retención");
 
 
@@ -655,7 +659,7 @@ $(function () {
 	    }).done(function(msg) {
 
 	      var filap="<option value=''>Seleccione Profesional</option>";
-	      var filao="<option value=''>Seleccione Obras Sociales</option>";
+	      var filao="<option value=''>Seleccione Obra Social</option>";
 	      var filal="<option value=''>Seleccione Retención</option>";
 
 
@@ -673,8 +677,8 @@ $(function () {
 
 
 
-	      $("#idprofesional").html(filap);
-	      $("#obras").html(filao);
+	      $("#profesionales").html(filap);
+	      $("#idobra").html(filao);
 	      $("#idliquidacion").html(filal);
 
 
@@ -682,7 +686,7 @@ $(function () {
 	      @if ($pago)
 
 
-		      $("#idprofesional").val("{{$pago->idprofesional}}").trigger('change');
+		      $("#idobra").val("{{$pago->idobra}}").trigger('change');
 		      $("#idliquidacion").val("{{$pago->idliquidacion}}").trigger('change');
 
 
@@ -989,8 +993,8 @@ $(function () {
 
 	  if (!articulos.length >0) {
 
-	    if ($('#obras').val()==="") {
-	        alert("Debe seleccionar al menos una obra");
+	    if ($('#profesionales').val()==="") {
+	        alert("Debe seleccionar al menos un profesional");
 	    };
 
 	  };
@@ -1024,13 +1028,13 @@ $(function () {
 	            "_token":         "{{ csrf_token() }}",
 	            "idliquidacion":  $('[name="idliquidacion"]').val(),
 	            "importe":        $('[name="importe"]').val(),
-	            "idprofesional":  $('[name="idprofesional"]').val(),
-	            "fecha":          "{{$date}}",
+	            "idobra":         $('[name="idobra"]').val(),
+	            "fecha":          $('[name="fecha"]').val(),
 	            "iva":            ivaa,
 	            "descuento":      descuento,
 	            "subtotal":       sub_total,
 	            "total":          total_general,
-	            "obras" :         totales,
+	            "profesionales" : totales,
 	            "descuentos" :    globalDescuento,
                 "tipo":          "{{$tipo}}",
                 "id":             numero,
@@ -1084,7 +1088,7 @@ $(function () {
 
             subTotal();
 
-            $("#obras").val('').trigger('change');
+            $("#profesionales").val('').trigger('change');
 
             document.getElementById('porcentaje').innerHTML = parseFloat(porcentaje).toFixed(0);
             document.getElementById('descuentos').innerHTML = parseFloat(0.00).toFixed(0);

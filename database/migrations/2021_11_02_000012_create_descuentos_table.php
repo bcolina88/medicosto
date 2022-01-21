@@ -16,7 +16,7 @@ class CreateDescuentosTable extends Migration
         Schema::create('descuentos', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('idpago');
-            $table->unsignedInteger('idprofesional');
+            $table->unsignedInteger('idobra');
             
 
             $table->string('nombre');
@@ -26,7 +26,7 @@ class CreateDescuentosTable extends Migration
 
             $table->string('fecha')->nullable();
             $table->foreign('idpago')->references('id')->on('pagos');
-            $table->foreign('idprofesional')->references('id')->on('profesionales');
+            $table->foreign('idobra')->references('id')->on('obras');
             $table->timestamps();
         });
     }

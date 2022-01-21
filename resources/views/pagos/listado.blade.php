@@ -33,9 +33,9 @@ Listado de Liquidaciones
                   <thead>
                   <tr>
                     <th>Nro</th>
-                    <th>Fecha Pago</th>
-                    <th>Importe</th>
-                    <th>Profesional</th>
+                    <th>Fecha</th>
+ 
+                    <th>Obra</th>
                     <th>Acciones</th>
                   </tr>
                   </thead>
@@ -45,9 +45,9 @@ Listado de Liquidaciones
 
                     <td>{{$medi->id}}</td>
                     <td>{{$medi->fecha}}</td>
-                    <td>{{$medi->importe}}</td>
+    
        
-                    <td>{{$medi->profesional->nombre}} {{$medi->profesional->apellido}} - {{$medi->profesional->matricula}}</td>
+                    <td>{{$medi->obra->nombre}} </td>
             
             
                      <td>

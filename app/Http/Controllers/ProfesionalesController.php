@@ -36,6 +36,10 @@ class ProfesionalesController extends Controller
 
 
         $profesionales =Profesional::Where('profesionales.nombre','LIKE','%'.$search.'%')
+                      ->orWhere('profesionales.apellido','LIKE','%'.$search.'%')
+                      ->orWhere('profesionales.matricula','LIKE','%'.$search.'%')
+                      ->orWhere('profesionales.cuit','LIKE','%'.$search.'%')
+                      ->orWhere('profesionales.telefono','LIKE','%'.$search.'%')
                       ->orderBy('profesionales.id','DESC')
                       ->select('profesionales.*')
                       ->paginate(25);

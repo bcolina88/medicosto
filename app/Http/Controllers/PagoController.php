@@ -45,14 +45,11 @@ class PagoController extends Controller
                     {
                         $f->on('pagos.idliquidacion','=','liquidaciones.id');
                     
-                    })->Join('profesionales', function($f) use($search)
+                    })->Join('obras', function($f) use($search)
                     {
-                        $f->on('pagos.idprofesional','=','profesionales.id');
+                        $f->on('pagos.idobra','=','obras.id');
    
-                    })->orWhere('profesionales.nombre','LIKE','%'.$search.'%')
-                      ->orWhere('profesionales.apellido','LIKE','%'.$search.'%')
-                      ->orWhere('profesionales.matricula','LIKE','%'.$search.'%')
-                      ->orWhere('pagos.importe','LIKE','%'.$search.'%')
+                    })->orWhere('obras.nombre','LIKE','%'.$search.'%')
                       ->orWhere('pagos.fecha','LIKE','%'.$search.'%')
                       ->orderBy('pagos.id','DESC')
                       ->select('pagos.*')
@@ -124,10 +121,9 @@ class PagoController extends Controller
           
 	        $pago->fill([
 	           
-	                 'fecha'            => $date,
-		             'importe'          => $request->importe,
+	                 'fecha'            => $request->fecha,
 		             'idliquidacion'	=> $request->idliquidacion,
-		             'idprofesional'    => $request->idprofesional,
+		             'idobra'           => $request->idobra,
 		             'iva'              => $request->iva,  
 		             'descuento'        => $request->descuento,
 		             'subtotal'         => $request->subtotal, 
@@ -161,10 +157,9 @@ class PagoController extends Controller
        
 
 		        $pago = Pago::firstOrCreate([
-		             'fecha'            => $date,
-		             'importe'          => $request->importe,
+		             'fecha'            => $request->fecha,
 		             'idliquidacion'	=> $request->idliquidacion,
-		             'idprofesional'    => $request->idprofesional,
+		             'idobra'           => $request->idobra,
 		             'iva'              => $request->iva,  
 		             'descuento'        => $request->descuento,
 		             'subtotal'         => $request->subtotal, 
@@ -180,7 +175,7 @@ class PagoController extends Controller
 
 
 
-		        $articulos = $request->obras;
+		        $articulos = $request->profesionales;
 
 
 		        foreach ($articulos as $key => $item) {
@@ -190,13 +185,15 @@ class PagoController extends Controller
 
 			          $pago_items = PagoItem::firstOrCreate([
 			             'idpago'         => $pago->id,
-			             'idobra'         => $item['id'],
+			             'idprofesional'       => $item['id'],
 			             'total_fact_odont'       => $item['cantidad'], 
 			             'porcentaje_cobro'  => $item['precio'],
 			             'total'          => $item['total'],
 			             'fecha'          => $date,
 			        
 			          ]);
+
+			          $pago_items->save();
 		          
 		        }
 
@@ -212,13 +209,15 @@ class PagoController extends Controller
 
 			          $descuento = Descuento::firstOrCreate([
 			             'idpago'            => $pago->id,
-			             'idprofesional'     => $request->idprofesional,
+			             'idobra'            => $pago->idobra,
 			             'nombre'            => $item['nombre'], 
 			             'valor'             => $item['importe'],
 			             'total_descuento'   => $request->descuento,
 			             'fecha'             => $date,
 			        
 			          ]);
+
+			          $descuento->save();
 		          
 		        }
 
@@ -267,34 +266,8 @@ class PagoController extends Controller
     {
 
 
-    	$pago = Pago::find($id);
-    	$v =[];
-        $v=$request->obras;
-        $photo ='';
-
-
-        for ($i = 0; $i < count($v); $i++) {
-        	$photo = $v[$i].','.$photo;
-        }
-
-        $obras = rtrim($photo,',');
-
-
-
-        $pago->fill([
-			'importe'          => $request->importe,
-			'idliquidacion'	=> $request->idliquidacion,
-			'idprofesional'  => $request->idprofesional,
-			'obras'	=> $obras,
-                           
-        ]);
-
-        $pago->save();
-
-        session::flash('message','La liquidación fue actualizada correctamente');
-        return redirect(route('liquidaciones.index')); 
-
-   }
+    	
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -304,6 +277,23 @@ class PagoController extends Controller
      */
     public function destroy($id)
     {
+    	
+
+        $Descuento = Descuento::where('idpago',$id)->get();
+
+        foreach ($Descuento as $key => $item) {
+            Descuento::destroy($item['id']);  
+        }
+
+
+
+        $PagoItem = PagoItem::where('idpago',$id)->get();
+        foreach ($PagoItem as $key => $item) {
+            PagoItem::destroy($item['id']);  
+        }
+           
+
+
     	Pago::destroy($id);
         session::flash('message','La liquidación fue eliminada correctamente');
         return redirect(route('liquidaciones.index')); 
@@ -341,10 +331,10 @@ class PagoController extends Controller
 
 
        // $pdf = PDF::loadView('pdf.recibo', compact('historical','ssn','ytd'));
-        $pago =  Pago::with(['liquidacion', 'profesional'])->where('id',$id)->first();
+        $pago =  Pago::with(['liquidacion', 'obra'])->where('id',$id)->first();
 
-        $pagoItems =  PagoItem::with(['obra'])->where('idpago',$id)->get();
-        $descuentos =  Descuento::with(['profesional'])->where('idpago',$id)->get();
+        $pagoItems =  PagoItem::with(['profesional'])->where('idpago',$id)->get();
+        $descuentos =  Descuento::with(['obra'])->where('idpago',$id)->get();
 
 
 
@@ -355,7 +345,7 @@ class PagoController extends Controller
 
 
 
-        $nomb = $pago->profesional->apellido;
+        $nomb = $pago->obra->nombre;
 
         return $pdf->download($nomb.'.pdf');
     }

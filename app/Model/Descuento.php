@@ -11,7 +11,7 @@ class Descuento extends Model
 
     protected $fillable = [
     
-        'idpago','idprofesional','nombre','valor','total_descuento','fecha','created_at','updated_at'
+        'idpago','idobra','nombre','valor','total_descuento','fecha','created_at','updated_at'
  
     ];
 
@@ -20,9 +20,9 @@ class Descuento extends Model
          return $this->belongsTo('App\Model\Pago', 'idpago', 'id');
     }
 
-    public function profesional()
+    public function obra()
     {
-         return $this->belongsTo('App\Model\Profesional', 'idprofesional', 'id');
+         return $this->belongsTo('App\Model\Obra', 'idobra', 'id');
     }
 
 

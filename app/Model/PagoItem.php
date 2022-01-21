@@ -11,7 +11,7 @@ class PagoItem extends Model
 
     protected $fillable = [
     
-        'idpago','idobra','total_fact_odont','porcentaje_cobro','total','fecha','created_at','updated_at'
+        'idpago','idprofesional','total_fact_odont','porcentaje_cobro','total','fecha','created_at','updated_at'
  
     ];
 
@@ -20,9 +20,9 @@ class PagoItem extends Model
          return $this->belongsTo('App\Model\Pago', 'idpago', 'id');
     }
 
-    public function obra()
+    public function profesional()
     {
-         return $this->belongsTo('App\Model\Obra', 'idobra', 'id');
+         return $this->belongsTo('App\Model\Profesional', 'idprofesional', 'id');
     }
 
 

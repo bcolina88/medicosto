@@ -47,11 +47,11 @@ class LiquidacionController extends Controller
 
 
 
-        $liquidaciones =Liquidacion::orWhere('liquidaciones.fecha','LIKE','%'.$search.'%')
+        $liquidaciones =Liquidacion::Where('liquidaciones.fecha','LIKE','%'.$search.'%')
         			  ->orWhere('liquidaciones.federacion_cuota','LIKE','%'.$search.'%')
         			  ->orWhere('liquidaciones.colegio_cuota','LIKE','%'.$search.'%')
         			  ->orWhere('liquidaciones.factura_federacion','LIKE','%'.$search.'%')
-        			  ->orWhere('liquidaciones.factura_colegio','LIKE','%'.$liquida_imp.'%')
+        			 // ->orWhere('liquidaciones.factura_colegio','LIKE','%'.$liquida_imp.'%')
                       ->orderBy('liquidaciones.id','DESC')
                       ->select('liquidaciones.*')
                       ->paginate(25);
