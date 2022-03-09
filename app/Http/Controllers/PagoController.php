@@ -303,34 +303,7 @@ class PagoController extends Controller
 
     public function pdf($id)
     {        
-        /**
-         * toma en cuenta que para ver los mismos 
-         * datos debemos hacer la misma consulta
-        **/
-       /* $historical =  Historical::with(['empleado', 'transcriptor'])->where('id',$id)->first();
-
-        $timesheet = HistoricalHasTimesheet::with(['timesheet'])->where('idhistorical',$historical->id)->first();
-
-        if ($timesheet) {
-            $historical['timesheet_info'] = $timesheet;
-        }else{
-            $historical['timesheet_info'] ='';
-        }
-
-        $seguro_social = explode("-", $historical->empleado->seguro_social);
-        $ssn = $seguro_social[2];
-
-
-
-        $ytd = DB::table('historicals')->where("historicals.idempleado", $id)
-                  ->select(DB::raw("sum(historicals.monto) AS total"))
-                  ->get();*/
-
-      
-
-
-
-       // $pdf = PDF::loadView('pdf.recibo', compact('historical','ssn','ytd'));
+       
         $pago =  Pago::with(['liquidacion', 'obra'])->where('id',$id)->first();
 
         $pagoItems =  PagoItem::with(['profesional'])->where('idpago',$id)->get();
@@ -349,6 +322,38 @@ class PagoController extends Controller
 
         return $pdf->download($nomb.'.pdf');
     }
+
+    public function pdf_profesional($id)
+    {        
+       
+
+        $pagoItems =  PagoItem::with(['profesional','pago'])->where('idprofesional',$id)->orderBy('id','DESC')->get();
+        $nomb_completo = $pagoItems[0]->profesional->apellido.', '.$pagoItems[0]->profesional->nombre;
+        $articulos =[];
+
+        foreach ($pagoItems as $key => $item) {
+
+
+        	  $descuentos =  Descuento::with(['obra'])->where('idpago',$item->idpago)->get();
+
+
+        	  $d =$item->pago->iva + $item->pago->descuento;
+        	  $obra =  Obra::where('id',$item->pago->idobra)->first();
+
+              $item->pago['obra'] = $obra->nombre;
+              $item->pago['retencion'] = $d;
+              $item->pago['descuento'] =  $descuentos;
+
+        }
+
+
+        $pdf = PDF::loadView('pdf.recibo_profesional', compact(['pagoItems','nomb_completo']));
+        $nomb = $pagoItems[0]->profesional->apellido;
+        return $pdf->download($nomb.'.pdf');
+        //return $pagoItems;
+    }
+
+
 
 
 

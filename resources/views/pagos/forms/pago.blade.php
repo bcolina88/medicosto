@@ -854,15 +854,17 @@ $(function () {
         total = (total == null || total == undefined || total == "") ? 0 : total;
         /* Esta es la multiplicacion. */
         total = (parseFloat(valor) * parseFloat(precio)/100);
+
+        ww = parseFloat(valor).toFixed(2) - parseFloat(total).toFixed(2);
         // Colocar el resultado de la multiplicacion en el control "spTotal".
-        document.getElementById('spTotal'+i).innerHTML = parseFloat(total).toFixed(2);
+        document.getElementById('spTotal'+i).innerHTML = parseFloat(ww).toFixed(2);
 
 
         if(!arti_creados.includes(id)) {
 
             articulo.id = id;
             articulo.cantidad = parseFloat(valor);
-            articulo.total = parseFloat(total).toFixed(2);
+            articulo.total = parseFloat(ww).toFixed(2);
             articulo.precio = parseFloat(precio);
             totales.push(articulo);
             arti_creados.push(id);
@@ -876,7 +878,7 @@ $(function () {
 
             articulo.id = id;
             articulo.cantidad = parseFloat(valor);
-            articulo.total = parseFloat(total).toFixed(2);
+            articulo.total = parseFloat(ww).toFixed(2);
             articulo.precio = parseFloat(precio);
 
             totales.push(articulo);

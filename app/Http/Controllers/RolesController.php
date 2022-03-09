@@ -8,6 +8,8 @@ use App\Model\Permiso;
 use DB;
 use Session;
 use Illuminate\Support\Facades\Auth;
+use App\Model\PagoItem;
+
 
 class RolesController extends Controller
 {
@@ -296,6 +298,20 @@ class RolesController extends Controller
         $Permiso = Permiso::where('idmaestro', $id)->where('idrol', Auth::user()->idrole)->first();
 
         if ($Permiso->inhabilitar == 1) {
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+
+
+     static function tiene_liquidacion($id)
+    {
+        
+        $Permiso = PagoItem::where('idprofesional', $id)->get();
+
+        if (count($Permiso) > 0) {
             return true;
         }else{
             return false;

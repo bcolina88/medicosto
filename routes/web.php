@@ -22,6 +22,7 @@ Route::post('/resetPassword', 'HomeController@resetPass')->name('resetPass');
 
 
 Route::get('descargar/{id}', 'PagoController@pdf')->name('reciboPago');
+Route::get('descargarP/{id}', 'PagoController@pdf_profesional')->name('reciboProfesional');
 
 //Route::get('/obras/crearPago', 'ObraController@createPago')->name('obras.createPago');
 //Route::get('/obras/listadoPagos', 'ObraController@listadoPagos')->name('obras.listadoPagos');

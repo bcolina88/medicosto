@@ -69,9 +69,17 @@ Listado de Profesionales
             
                      <td>
                       <div class="btn-group">
-               {!! Form::model($profesional, ['route'=>['profesionales.update', $profesional->id], 'method'=>'DELETE']) !!}
+                   {!! Form::model($profesional, ['route'=>['profesionales.update', $profesional->id], 'method'=>'DELETE']) !!}
 
   
+                        @if (\App\Http\Controllers\RolesController::tiene_liquidacion($profesional->id))
+                   		   <a href="{{route("reciboProfesional", ['id' => $profesional->id])}}" class='btn btn-info fa fa-file-pdf-o'><b></b></a> 
+			            @endif
+
+
+
+
+
                      @if (\App\Http\Controllers\RolesController::inhabilitar(7))
 
 			               @if ($profesional->active === 1)
